@@ -1,6 +1,7 @@
 django>=5.0,<6.0
 environs[django]
 django-htmx
+django-cors-headers
 django-crispy-forms
 crispy-bootstrap5
 coverage

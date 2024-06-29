@@ -7,6 +7,7 @@
 asgiref==3.8.1
     # via
     #   django
+    #   django-cors-headers
     #   django-htmx
 coverage==7.5.4
     # via -r requirements.in
@@ -21,10 +22,13 @@ django==5.0.6
     #   -r requirements.in
     #   crispy-bootstrap5
     #   dj-database-url
+    #   django-cors-headers
     #   django-crispy-forms
     #   django-htmx
 django-cache-url==3.4.5
     # via environs
+django-cors-headers==4.4.0
+    # via -r requirements.in
 django-crispy-forms==2.2
     # via
     #   -r requirements.in
