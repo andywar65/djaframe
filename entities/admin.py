@@ -6,4 +6,4 @@ from .models import Entity
 @admin.register(Entity)
 class EntityAdmin(admin.ModelAdmin):
     list_display = ("id",)
-    fields = ("obj_model",)
+    fields = ("obj_model", "mtl_model")
