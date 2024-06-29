@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     "django_htmx",
     "crispy_forms",
     "crispy_bootstrap5",
+    # local
+    "entities.apps.EntitiesConfig",
 ]
 
 MIDDLEWARE = [
