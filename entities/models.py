@@ -1,3 +1,10 @@
-from django.db import models  # noqa
+from django.db import models
 
-# Create your models here.
+
+class Entity(models.Model):
+
+    obj_model = models.FileField()
+
+    class Meta:
+        verbose_name = "Entity"
+        verbose_name_plural = "Entities"
