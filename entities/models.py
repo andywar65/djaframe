@@ -17,6 +17,7 @@ class Entity(models.Model):
                 ]
             )
         ],
+        null=True,
     )
     mtl_model = models.FileField(
         "MTL file",

@@ -1,8 +1,9 @@
 from django.urls import path
 
-from .views import EntityDetailView
+from .views import EntityCreateView, EntityDetailView
 
 app_name = "entities"
 urlpatterns = [
-    path("<pk>/", EntityDetailView.as_view(), name="entity_detail"),
+    path("entity/add/", EntityCreateView.as_view(), name="entity_create"),
+    path("entity/<pk>/", EntityDetailView.as_view(), name="entity_detail"),
 ]
