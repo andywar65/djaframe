@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView
+from django.views.generic import CreateView, DetailView, UpdateView
 
 from .models import Entity
 
@@ -24,6 +24,21 @@ class EntityCreateView(HtmxMixin, CreateView):
     model = Entity
     form_class = EntityCreateForm
     template_name = "entities/htmx/entity_create.html"
+
+    def get_success_url(self):
+        return reverse("entities:entity_update", kwargs={"pk": self.object.id})
+
+
+class EntityUpdateForm(ModelForm):
+    class Meta:
+        model = Entity
+        fields = ("title", "obj_model", "mtl_model", "switch", "description")
+
+
+class EntityUpdateView(HtmxMixin, UpdateView):
+    model = Entity
+    form_class = EntityUpdateForm
+    template_name = "entities/htmx/entity_update.html"
 
     def get_success_url(self):
         return reverse("entities:entity_detail", kwargs={"pk": self.object.id})
