@@ -2,6 +2,10 @@ from django.core.validators import FileExtensionValidator
 from django.db import models
 
 
+def entity_directory_path(instance, filename):
+    return "uploads/aframe/obj/{0}/{1}".format(instance.id, filename)
+
+
 class Entity(models.Model):
 
     title = models.CharField(max_length=50)
@@ -9,7 +13,7 @@ class Entity(models.Model):
     obj_model = models.FileField(
         "OBJ file",
         max_length=200,
-        upload_to="uploads/aframe/obj/",
+        upload_to=entity_directory_path,
         validators=[
             FileExtensionValidator(
                 allowed_extensions=[
@@ -22,7 +26,7 @@ class Entity(models.Model):
     mtl_model = models.FileField(
         "MTL file",
         max_length=200,
-        upload_to="uploads/aframe/obj/",
+        upload_to=entity_directory_path,
         validators=[
             FileExtensionValidator(
                 allowed_extensions=[
