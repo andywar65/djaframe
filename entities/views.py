@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django.forms import CharField, ModelForm, TextInput
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, UpdateView
 
@@ -30,9 +30,17 @@ class EntityCreateView(HtmxMixin, CreateView):
 
 
 class EntityUpdateForm(ModelForm):
+    color = CharField(
+        label="Color",
+        required=True,
+        widget=TextInput(
+            attrs={"class": "form-control form-control-color", "type": "color"}
+        ),
+    )
+
     class Meta:
         model = Entity
-        fields = ("title", "obj_model", "mtl_model", "switch", "description")
+        fields = ("title", "obj_model", "mtl_model", "switch", "color", "description")
 
 
 class EntityUpdateView(HtmxMixin, UpdateView):

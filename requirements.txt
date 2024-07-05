@@ -41,6 +41,8 @@ marshmallow==3.21.3
     # via environs
 packaging==24.1
     # via marshmallow
+pillow==10.4.0
+    # via -r requirements.in
 python-dotenv==1.0.1
     # via environs
 sqlparse==0.5.0

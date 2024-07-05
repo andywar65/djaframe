@@ -1,6 +1,6 @@
 <a-scene>
   <a-entity obj-model="obj: url({{ object.obj_model.url }}){% if object.mtl_model %}; mtl: url({{ object.mtl_model.url }}){% endif %}"
             {% if object.switch %}rotation="-90 0 0"{% endif %}
-            {% if not object.mtl_model %}material="color: #ff00ff"{% endif %}>
+            {% if not object.mtl_model %}material="color: {{ object.color }}"{% endif %}>
   </a-entity>
 </a-scene>

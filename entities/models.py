@@ -38,6 +38,7 @@ class Entity(models.Model):
         blank=True,
     )
     switch = models.BooleanField(default=False, help_text="Switch Z/Y axis")
+    color = models.CharField(default="#FFFFFF", max_length=7)
 
     class Meta:
         verbose_name = "Entity"
@@ -45,3 +46,17 @@ class Entity(models.Model):
 
     def __str__(self):
         return self.title
+
+
+def material_image_directory_path(instance, filename):
+    return "uploads/aframe/obj/{0}/{1}".format(instance.entity.id, filename)
+
+
+class MaterialImage(models.Model):
+    entity = models.ForeignKey(
+        Entity,
+        on_delete=models.CASCADE,
+        related_name="material_image",
+        verbose_name="Material image",
+    )
+    image = models.ImageField(upload_to=material_image_directory_path)
