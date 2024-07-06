@@ -84,7 +84,7 @@ def material_image_create(request, pk):
                 image=form.cleaned_data["image"],
             )
             return HttpResponseRedirect(
-                reverse("matimg_create"),
+                reverse("entities:matimg_create", kwargs={"pk": entity.id}),
             )
         else:
             context["matimg_form"] = form

@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from django.core.validators import FileExtensionValidator
 from django.db import models
 
@@ -60,3 +62,6 @@ class MaterialImage(models.Model):
         verbose_name="Material image",
     )
     image = models.ImageField(upload_to=material_image_directory_path)
+
+    def __str__(self):
+        return Path(self.image.url).name

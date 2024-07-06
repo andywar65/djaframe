@@ -26,7 +26,10 @@
   </div>
 </div>
 <div id="material-images"
-     class="card mx-auto mt-2"
+     class="card mx-auto mt-3"
      style="max-width: 480px">
+  <div class="card-header">
+    {% trans "Material images" %}
+  </div>
   {% include "entities/htmx/material_image_loop.html" %}
 </div>

@@ -4,12 +4,16 @@
 <div class="card-body">
   {% if object.material_images.all %}
     {% for matimg in object.material_images.all %}
-      {{ matimg.image }}
+      <div class="card mb-2" id="material-image-{{ matimg.id }}">
+        <div class="card-body">
+          {{ matimg }}
+        </div>
+      </div>
     {% endfor %}
   {% else %}
     <p>{% trans "No material images yet" %}</p>
+    <hr>
   {% endif %}
-  <hr>
   <button id="matimg-create-button"
           class="btn btn-bg btn-success"
           script="on click hide me then show #matimg-create-form"
