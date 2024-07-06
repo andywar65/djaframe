@@ -6,7 +6,7 @@ from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.response import TemplateResponse
 from django.urls import reverse
-from django.views.generic import CreateView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
 from .models import Entity, MaterialImage
 
@@ -18,6 +18,11 @@ class HtmxMixin:
         if not self.request.htmx:
             return [self.template_name.replace("htmx/", "")]
         return [self.template_name]
+
+
+class EntityListView(HtmxMixin, ListView):
+    model = Entity
+    template_name = "entities/htmx/entity_list.html"
 
 
 class EntityCreateForm(ModelForm):
