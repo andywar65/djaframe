@@ -1,7 +1,6 @@
 from pathlib import Path
 from typing import Any
 
-from django.conf import settings
 from django.forms import CharField, ModelForm, TextInput
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -108,9 +107,9 @@ def material_image_delete(request, pk):
     template_name = "entities/htmx/material_image_loop.html"
     # delete file and material image
     try:
-        file = Path(settings.MEDIA_ROOT).joinpath(matimg.image.url)
+        file = Path(matimg.image.path)
         if file.is_file():
-            file.unlink()
+            Path(file).unlink()
     except FileNotFoundError:
         pass
     matimg.delete()
