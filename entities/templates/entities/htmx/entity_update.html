@@ -16,41 +16,17 @@
               hx-push-url="true">
         {% trans "Update entity" %}
       </button>
+      <button class="btn-close"
+              title="{% trans 'Dismiss' %}"
+              hx-get="{% url 'entities:entity_detail' pk=object.id %}"
+              hx-target="#content"
+              hx-push-url="true">
+      </button>
     </form>
   </div>
 </div>
 <div id="material-images"
      class="card mx-auto mt-2"
      style="max-width: 480px">
-  <div class="card-body">
-    {% if object.material_images.all %}
-      {% for matimg in object.material_images.all %}
-      {% endfor %}
-    {% else %}
-      <p>{% trans "No material images yet" %}</p>
-    {% endif %}
-    <hr>
-    <button id="matimg-create-button"
-            class="btn btn-bg btn-success"
-            script="on click hide me then show #matimg-create-form">
-      {% trans "Add material image" %}
-    </button>
-    <div id="matimg-create-form"
-         style="display: none">
-      <form>
-        {{ matimg_form|crispy }}
-        <button class="btn btn-primary"
-                type="submit"
-                hx-post="#"
-                hx-target="#material-images"
-                hx-encoding="multipart/form-data">
-          {% trans "Add material image" %}
-        </button>
-        <button class="btn-close"
-                title="{% trans 'Dismiss' %}"
-                script="on click hide #matimg-create-form then show #matimg-create-button">
-        </button>
-      </form>
-    </div>
-  </div>
+  {% include "entities/htmx/material_image_loop.html" %}
 </div>

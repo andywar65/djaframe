@@ -1,8 +1,13 @@
+from typing import Any
+
 from django.forms import CharField, ModelForm, TextInput
+from django.http import Http404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, UpdateView
 
-from .models import Entity
+from .models import Entity, MaterialImage
 
 
 class HtmxMixin:
@@ -43,13 +48,52 @@ class EntityUpdateForm(ModelForm):
         fields = ("title", "obj_model", "mtl_model", "switch", "color", "description")
 
 
+class MaterialImageCreateForm(ModelForm):
+    class Meta:
+        model = MaterialImage
+        fields = ("image",)
+
+
 class EntityUpdateView(HtmxMixin, UpdateView):
     model = Entity
     form_class = EntityUpdateForm
     template_name = "entities/htmx/entity_update.html"
 
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["matimg_form"] = MaterialImageCreateForm()
+        return context
+
     def get_success_url(self):
         return reverse("entities:entity_detail", kwargs={"pk": self.object.id})
+
+
+def material_image_create(request, pk):
+    if not request.htmx:
+        raise Http404("Request without HTMX headers")
+    entity = get_object_or_404(Entity, pk=pk)
+    form = MaterialImageCreateForm()
+    context = {"object": entity, "matimg_form": form}
+    template_name = "entities/htmx/material_image_loop.html"
+    if request.method == "POST":
+        form = MaterialImageCreateForm(request.POST, request.FILES)
+        if form.is_valid():
+            # create material image
+            MaterialImage.objects.create(
+                entity=entity,
+                image=form.cleaned_data["image"],
+            )
+            return HttpResponseRedirect(
+                reverse("matimg_create"),
+            )
+        else:
+            context["matimg_form"] = form
+            context["invalid_form"] = True
+    return TemplateResponse(
+        request,
+        template_name,
+        context,
+    )
 
 
 class EntityDetailView(HtmxMixin, DetailView):
