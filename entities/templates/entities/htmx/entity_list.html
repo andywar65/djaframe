@@ -5,6 +5,34 @@
     <h4 class="card-title">{% trans "Entity list"%}</h4>
   </div>
   <div class="card-body">
+    {% if object_list %}
+      <table class="table">
+        <tbody>
+          {% for object in object_list %}
+            <tr>
+              <td>
+                <a class="link link-primary"
+                   hx-get="{% url 'entities:entity_detail' pk=object.id %}"
+                   hx-target="#content"
+                   hx-push-url="true">
+                  {{ object.title }}
+                </a>
+              </td>
+              <td>
+                <a class="link link-primary"
+                   hx-get="{% url 'entities:entity_update' pk=object.id %}"
+                   hx-target="#content"
+                   hx-push-url="true">
+                  {% trans "Modify" %}
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p>{% trans "No entities yet" %}</p>
+    {% endif %}
     <button class="btn btn-success"
             hx-get="{% url 'entities:entity_create' %}"
             hx-target="#content"
