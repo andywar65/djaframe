@@ -128,3 +128,19 @@ def material_image_delete(request, pk):
 class EntityDetailView(HtmxMixin, DetailView):
     model = Entity
     template_name = "entities/htmx/entity_detail.html"
+
+
+def entity_delete(request, pk):
+    if not request.htmx:
+        raise Http404("Request without HTMX headers")
+    # get entity and prepare for template response
+    entity = get_object_or_404(Entity, pk=pk)
+    context = {}
+    template_name = "entities/htmx/entity_delete.html"
+    # delete entity
+    entity.delete()
+    return TemplateResponse(
+        request,
+        template_name,
+        context,
+    )
