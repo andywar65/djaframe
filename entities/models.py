@@ -56,7 +56,7 @@ class MaterialImage(models.Model):
     entity = models.ForeignKey(
         Entity,
         on_delete=models.CASCADE,
-        related_name="material_image",
+        related_name="material_images",
         verbose_name="Material image",
     )
     image = models.ImageField(upload_to=material_image_directory_path)
