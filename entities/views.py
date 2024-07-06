@@ -1,5 +1,7 @@
+from pathlib import Path
 from typing import Any
 
+from django.conf import settings
 from django.forms import CharField, ModelForm, TextInput
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -89,6 +91,29 @@ def material_image_create(request, pk):
         else:
             context["matimg_form"] = form
             context["invalid_form"] = True
+    return TemplateResponse(
+        request,
+        template_name,
+        context,
+    )
+
+
+def material_image_delete(request, pk):
+    if not request.htmx:
+        raise Http404("Request without HTMX headers")
+    # get material image and prepare for template response
+    matimg = get_object_or_404(MaterialImage, pk=pk)
+    form = MaterialImageCreateForm()
+    context = {"object": matimg.entity, "matimg_form": form}
+    template_name = "entities/htmx/material_image_loop.html"
+    # delete file and material image
+    try:
+        file = Path(settings.MEDIA_ROOT).joinpath(matimg.image.url)
+        if file.is_file():
+            file.unlink()
+    except FileNotFoundError:
+        pass
+    matimg.delete()
     return TemplateResponse(
         request,
         template_name,

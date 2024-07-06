@@ -6,7 +6,13 @@
     {% for matimg in object.material_images.all %}
       <div class="card mb-2" id="material-image-{{ matimg.id }}">
         <div class="card-body">
-          {{ matimg }}
+          <p>{{ matimg }}</p>
+          <a class="link link-danger"
+             hx-get="{% url 'entities:matimg_delete' pk=matimg.id %}"
+             hx-target="#material-images"
+             hx-confirm="{% trans 'Are you sure you want to delete this image?' %}">
+            {% trans "Delete this image" %}
+          </a>
         </div>
       </div>
     {% endfor %}
