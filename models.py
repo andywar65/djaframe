@@ -5,7 +5,7 @@ from django.db import models
 
 
 def entity_directory_path(instance, filename):
-    return "uploads/aframe/obj/{0}/{1}".format(instance.id, filename)
+    return "uploads/djaframe/obj/{0}/{1}".format(instance.id, filename)
 
 
 class Entity(models.Model):
@@ -51,7 +51,7 @@ class Entity(models.Model):
 
 
 def material_image_directory_path(instance, filename):
-    return "uploads/aframe/obj/{0}/{1}".format(instance.entity.id, filename)
+    return "uploads/djaframe/obj/{0}/{1}".format(instance.entity.id, filename)
 
 
 class MaterialImage(models.Model):
