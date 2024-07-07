@@ -10,7 +10,7 @@
       {{ form|crispy }}
       <button class="btn btn-primary"
               type="submit"
-              hx-post="{% url 'entities:entity_create' %}"
+              hx-post="{% url 'djaframe:entity_create' %}"
               hx-target="#content"
               hx-push-url="true">
         {% trans "Add entity" %}

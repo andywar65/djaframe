@@ -22,7 +22,7 @@ class HtmxMixin:
 
 class EntityListView(HtmxMixin, ListView):
     model = Entity
-    template_name = "entities/htmx/entity_list.html"
+    template_name = "djaframe/htmx/entity_list.html"
 
 
 class EntityCreateForm(ModelForm):
@@ -34,10 +34,10 @@ class EntityCreateForm(ModelForm):
 class EntityCreateView(HtmxMixin, CreateView):
     model = Entity
     form_class = EntityCreateForm
-    template_name = "entities/htmx/entity_create.html"
+    template_name = "djaframe/htmx/entity_create.html"
 
     def get_success_url(self):
-        return reverse("entities:entity_update", kwargs={"pk": self.object.id})
+        return reverse("djaframe:entity_update", kwargs={"pk": self.object.id})
 
 
 class EntityUpdateForm(ModelForm):
@@ -63,7 +63,7 @@ class MaterialImageCreateForm(ModelForm):
 class EntityUpdateView(HtmxMixin, UpdateView):
     model = Entity
     form_class = EntityUpdateForm
-    template_name = "entities/htmx/entity_update.html"
+    template_name = "djaframe/htmx/entity_update.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
         context = super().get_context_data(**kwargs)
@@ -71,7 +71,7 @@ class EntityUpdateView(HtmxMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        return reverse("entities:entity_detail", kwargs={"pk": self.object.id})
+        return reverse("djaframe:entity_detail", kwargs={"pk": self.object.id})
 
 
 def material_image_create(request, pk):
@@ -80,7 +80,7 @@ def material_image_create(request, pk):
     entity = get_object_or_404(Entity, pk=pk)
     form = MaterialImageCreateForm()
     context = {"object": entity, "matimg_form": form}
-    template_name = "entities/htmx/material_image_loop.html"
+    template_name = "djaframe/htmx/material_image_loop.html"
     if request.method == "POST":
         form = MaterialImageCreateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -90,7 +90,7 @@ def material_image_create(request, pk):
                 image=form.cleaned_data["image"],
             )
             return HttpResponseRedirect(
-                reverse("entities:matimg_create", kwargs={"pk": entity.id}),
+                reverse("djaframe:matimg_create", kwargs={"pk": entity.id}),
             )
         else:
             context["matimg_form"] = form
@@ -109,7 +109,7 @@ def material_image_delete(request, pk):
     matimg = get_object_or_404(MaterialImage, pk=pk)
     form = MaterialImageCreateForm()
     context = {"object": matimg.entity, "matimg_form": form}
-    template_name = "entities/htmx/material_image_loop.html"
+    template_name = "djaframe/htmx/material_image_loop.html"
     # delete file and material image
     try:
         file = Path(matimg.image.path)
@@ -127,7 +127,7 @@ def material_image_delete(request, pk):
 
 class EntityDetailView(HtmxMixin, DetailView):
     model = Entity
-    template_name = "entities/htmx/entity_detail.html"
+    template_name = "djaframe/htmx/entity_detail.html"
 
 
 def entity_delete(request, pk):
@@ -136,7 +136,7 @@ def entity_delete(request, pk):
     # get entity and prepare for template response
     entity = get_object_or_404(Entity, pk=pk)
     context = {}
-    template_name = "entities/htmx/entity_delete.html"
+    template_name = "djaframe/htmx/entity_delete.html"
     # delete entity
     entity.delete()
     return TemplateResponse(

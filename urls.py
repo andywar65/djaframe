@@ -10,7 +10,7 @@ from .views import (
     material_image_delete,
 )
 
-app_name = "entities"
+app_name = "djaframe"
 urlpatterns = [
     path("entity/all/", EntityListView.as_view(), name="entity_list"),
     path("entity/add/", EntityCreateView.as_view(), name="entity_create"),
