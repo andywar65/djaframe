@@ -11,14 +11,14 @@
       <button class="btn btn-primary"
               type="submit"
               hx-encoding='multipart/form-data'
-              hx-post="{% url 'entities:entity_update' pk=object.id %}"
+              hx-post="{% url 'djaframe:entity_update' pk=object.id %}"
               hx-target="#content"
               hx-push-url="true">
         {% trans "Update entity" %}
       </button>
       <button class="btn-close"
               title="{% trans 'Dismiss' %}"
-              hx-get="{% url 'entities:entity_detail' pk=object.id %}"
+              hx-get="{% url 'djaframe:entity_detail' pk=object.id %}"
               hx-target="#content"
               hx-push-url="true">
       </button>
@@ -31,5 +31,5 @@
   <div class="card-header">
     {% trans "Material images" %}
   </div>
-  {% include "entities/htmx/material_image_loop.html" %}
+  {% include "djaframe/htmx/material_image_loop.html" %}
 </div>

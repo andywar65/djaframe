@@ -8,7 +8,7 @@
         <div class="card-body">
           <p>{{ matimg }}</p>
           <a class="link link-danger"
-             hx-get="{% url 'entities:matimg_delete' pk=matimg.id %}"
+             hx-get="{% url 'djaframe:matimg_delete' pk=matimg.id %}"
              hx-target="#material-images"
              hx-confirm="{% trans 'Are you sure you want to delete this image?' %}">
             {% trans "Delete this image" %}
@@ -32,7 +32,7 @@
       {{ matimg_form|crispy }}
       <button class="btn btn-primary"
               type="submit"
-              hx-post="{% url 'entities:matimg_create' pk=object.id %}"
+              hx-post="{% url 'djaframe:matimg_create' pk=object.id %}"
               hx-target="#material-images"
               hx-encoding="multipart/form-data">
         {% trans "Add material image" %}

@@ -1,7 +1,7 @@
 {% load i18n %}
 
 <div class="alert alert-danger"
-     hx-get="{% url 'entities:entity_list' %}"
+     hx-get="{% url 'djaframe:entity_list' %}"
      hx-target="#content"
      hx-trigger="load delay:300ms">
   {% trans "Deleting..." %}<span class="spinner-border spinner-border-sm"></span>
