@@ -1,0 +1,46 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div class="card-body">
+  {% if object.material_images.all %}
+    {% for matimg in object.material_images.all %}
+      <div class="card mb-2" id="material-image-{{ matimg.id }}">
+        <div class="card-body">
+          <p>{{ matimg }}</p>
+          <a class="link link-danger"
+             hx-get="{% url 'entities:matimg_delete' pk=matimg.id %}"
+             hx-target="#material-images"
+             hx-confirm="{% trans 'Are you sure you want to delete this image?' %}">
+            {% trans "Delete this image" %}
+          </a>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>{% trans "No material images yet" %}</p>
+    <hr>
+  {% endif %}
+  <button id="matimg-create-button"
+          class="btn btn-bg btn-success"
+          script="on click hide me then show #matimg-create-form"
+          {% if invalid_form %}style="display: none"{% endif %}>
+    {% trans "Add material image" %}
+  </button>
+  <div id="matimg-create-form"
+       {% if not invalid_form %}style="display: none"{% endif %}>
+    <form>
+      {{ matimg_form|crispy }}
+      <button class="btn btn-primary"
+              type="submit"
+              hx-post="{% url 'entities:matimg_create' pk=object.id %}"
+              hx-target="#material-images"
+              hx-encoding="multipart/form-data">
+        {% trans "Add material image" %}
+      </button>
+      <button class="btn-close"
+              title="{% trans 'Dismiss' %}"
+              script="on click hide #matimg-create-form then show #matimg-create-button">
+      </button>
+    </form>
+  </div>
+</div>
