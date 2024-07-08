@@ -8,7 +8,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
-from .models import Entity, MaterialImage
+from .models import Entity, MaterialImage, Scene
 
 
 class HtmxMixin:
@@ -144,3 +144,8 @@ def entity_delete(request, pk):
         template_name,
         context,
     )
+
+
+class SceneListView(HtmxMixin, ListView):
+    model = Scene
+    template_name = "djaframe/htmx/scene_list.html"
