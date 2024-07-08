@@ -149,3 +149,19 @@ def entity_delete(request, pk):
 class SceneListView(HtmxMixin, ListView):
     model = Scene
     template_name = "djaframe/htmx/scene_list.html"
+
+
+class SceneCreateForm(ModelForm):
+    class Meta:
+        model = Scene
+        fields = ("title", "description")
+
+
+class SceneCreateView(HtmxMixin, CreateView):
+    model = Scene
+    form_class = SceneCreateForm
+    template_name = "djaframe/htmx/scene_create.html"
+
+    def get_success_url(self):
+        # TODO change when ready
+        return reverse("djaframe:entity_update", kwargs={"pk": self.object.id})

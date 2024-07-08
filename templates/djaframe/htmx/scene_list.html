@@ -45,10 +45,10 @@
       <p>{% trans "No scenes yet" %}</p>
     {% endif %}
     <button class="btn btn-success"
-            hx-get="{% url 'djaframe:entity_create' %}"
+            hx-get="{% url 'djaframe:scene_create' %}"
             hx-target="#content"
             hx-push-url="true">
-      {% trans "Add scene(!)" %}
+      {% trans "Add scene" %}
     </button>
     <a class="link link-primary"
        hx-get="{% url 'djaframe:entity_list' %}"
