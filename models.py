@@ -65,3 +65,16 @@ class MaterialImage(models.Model):
 
     def __str__(self):
         return Path(self.image.url).name
+
+
+class Scene(models.Model):
+
+    title = models.CharField(max_length=50)
+    description = models.TextField(max_length=500, null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Scene"
+        verbose_name_plural = "Scenes"
+
+    def __str__(self):
+        return self.title
