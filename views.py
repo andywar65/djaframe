@@ -163,5 +163,14 @@ class SceneCreateView(HtmxMixin, CreateView):
     template_name = "djaframe/htmx/scene_create.html"
 
     def get_success_url(self):
+        return reverse("djaframe:scene_update", kwargs={"pk": self.object.id})
+
+
+class SceneUpdateView(HtmxMixin, UpdateView):
+    model = Scene
+    form_class = SceneCreateForm
+    template_name = "djaframe/htmx/scene_update.html"
+
+    def get_success_url(self):
         # TODO change when ready
         return reverse("djaframe:entity_update", kwargs={"pk": self.object.id})

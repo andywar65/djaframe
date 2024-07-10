@@ -8,6 +8,7 @@
   <div class="card-body">
     <form>
       {{ form|crispy }}
+      Links depend on placements
       <button class="btn btn-primary"
               type="submit"
               hx-post="{% url 'djaframe:scene_create' %}"

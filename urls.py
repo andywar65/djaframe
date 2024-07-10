@@ -7,6 +7,7 @@ from .views import (
     EntityUpdateView,
     SceneCreateView,
     SceneListView,
+    SceneUpdateView,
     entity_delete,
     material_image_create,
     material_image_delete,
@@ -23,4 +24,5 @@ urlpatterns = [
     path("matimg/<pk>/", material_image_delete, name="matimg_delete"),
     path("scene/list/", SceneListView.as_view(), name="scene_list"),
     path("scene/add/", SceneCreateView.as_view(), name="scene_create"),
+    path("scene/<pk>/update/", SceneUpdateView.as_view(), name="scene_update"),
 ]
