@@ -15,6 +15,12 @@
               hx-push-url="true">
         {% trans "Add scene" %}
       </button>
+      <button class="btn-close"
+              title="{% trans 'Dismiss' %}"
+              hx-get="{% url 'djaframe:scene_list' %}"
+              hx-target="#content"
+              hx-push-url="true">
+      </button>
     </form>
   </div>
 </div>

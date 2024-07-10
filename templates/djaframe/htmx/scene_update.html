@@ -3,21 +3,21 @@
 
 <div class="card mx-auto" style="max-width: 480px">
   <div class="card-header">
-    <h4 class="card-title">{% trans "Create entity"%}</h4>
+    <h4 class="card-title">{% trans "Update scene"%}: {{ object.title }}</h4>
   </div>
   <div class="card-body">
     <form>
       {{ form|crispy }}
       <button class="btn btn-primary"
               type="submit"
-              hx-post="{% url 'djaframe:entity_create' %}"
+              hx-post="{% url 'djaframe:scene_create' %}"
               hx-target="#content"
               hx-push-url="true">
-        {% trans "Add entity" %}
+        {% trans "Update scene (!)" %}
       </button>
       <button class="btn-close"
-              title="{% trans 'Dismiss' %}"
-              hx-get="{% url 'djaframe:entity_list' %}"
+              title="{% trans 'Dismiss (!)' %}"
+              hx-get="{% url 'djaframe:entity_detail' pk=object.id %}"
               hx-target="#content"
               hx-push-url="true">
       </button>
