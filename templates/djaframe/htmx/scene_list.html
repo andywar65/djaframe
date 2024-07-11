@@ -31,10 +31,10 @@
               </td>
               <td>
                 <a class="link link-danger"
-                   hx-get="{% url 'djaframe:entity_delete' pk=object.id %}"
+                   hx-get="{% url 'djaframe:scene_delete' pk=object.id %}"
                    hx-target="#scene-row-{{ object.id }}"
-                   hx-confirm="{% trans 'Are you sure you want to delete this scene?(!)' %}">
-                  {% trans "Delete(!)" %}
+                   hx-confirm="{% trans 'Are you sure you want to delete this scene?' %}">
+                  {% trans "Delete" %}
                 </a>
               </td>
             </tr>

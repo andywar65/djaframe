@@ -174,3 +174,19 @@ class SceneUpdateView(HtmxMixin, UpdateView):
     def get_success_url(self):
         # TODO change when ready
         return reverse("djaframe:entity_update", kwargs={"pk": self.object.id})
+
+
+def scene_delete(request, pk):
+    if not request.htmx:
+        raise Http404("Request without HTMX headers")
+    # get entity and prepare for template response
+    scene = get_object_or_404(Scene, pk=pk)
+    context = {}
+    template_name = "djaframe/htmx/scene_delete.html"
+    # delete scene
+    scene.delete()
+    return TemplateResponse(
+        request,
+        template_name,
+        context,
+    )
