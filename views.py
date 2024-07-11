@@ -77,7 +77,7 @@ class EntityUpdateView(HtmxMixin, UpdateView):
 def material_image_create(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
-    entity = get_object_or_404(Entity, pk=pk)
+    entity = get_object_or_404(Entity, id=pk)
     form = MaterialImageCreateForm()
     context = {"object": entity, "matimg_form": form}
     template_name = "djaframe/htmx/material_image_loop.html"
@@ -106,7 +106,7 @@ def material_image_delete(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
     # get material image and prepare for template response
-    matimg = get_object_or_404(MaterialImage, pk=pk)
+    matimg = get_object_or_404(MaterialImage, id=pk)
     form = MaterialImageCreateForm()
     context = {"object": matimg.entity, "matimg_form": form}
     template_name = "djaframe/htmx/material_image_loop.html"
@@ -134,7 +134,7 @@ def entity_delete(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
     # get entity and prepare for template response
-    entity = get_object_or_404(Entity, pk=pk)
+    entity = get_object_or_404(Entity, id=pk)
     context = {}
     template_name = "djaframe/htmx/entity_delete.html"
     # delete entity
@@ -180,7 +180,7 @@ def scene_delete(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
     # get entity and prepare for template response
-    scene = get_object_or_404(Scene, pk=pk)
+    scene = get_object_or_404(Scene, id=pk)
     context = {}
     template_name = "djaframe/htmx/scene_delete.html"
     # delete scene
