@@ -8,7 +8,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
-from .models import Entity, MaterialImage, Scene
+from .models import Entity, MaterialImage, Scene, Staging
 
 
 class HtmxMixin:
@@ -166,10 +166,21 @@ class SceneCreateView(HtmxMixin, CreateView):
         return reverse("djaframe:scene_update", kwargs={"pk": self.object.id})
 
 
+class StagingCreateForm(ModelForm):
+    class Meta:
+        model = Staging
+        fields = ("entity", "x_pos", "z_pos", "rotation")
+
+
 class SceneUpdateView(HtmxMixin, UpdateView):
     model = Scene
     form_class = SceneCreateForm
     template_name = "djaframe/htmx/scene_update.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["staging_form"] = StagingCreateForm()
+        return context
 
     def get_success_url(self):
         # TODO change when ready
@@ -185,6 +196,37 @@ def scene_delete(request, pk):
     template_name = "djaframe/htmx/scene_delete.html"
     # delete scene
     scene.delete()
+    return TemplateResponse(
+        request,
+        template_name,
+        context,
+    )
+
+
+def staged_entity_create(request, pk):
+    if not request.htmx:
+        raise Http404("Request without HTMX headers")
+    scene = get_object_or_404(Scene, id=pk)
+    form = StagingCreateForm()
+    context = {"object": scene, "staging_form": form}
+    template_name = "djaframe/htmx/staged_entity_loop.html"
+    if request.method == "POST":
+        form = StagingCreateForm(request.POST)
+        if form.is_valid():
+            # create staged entity
+            Staging.objects.create(
+                scene=scene,
+                entity=form.cleaned_data["entity"],
+                x_pos=form.cleaned_data["x_pos"],
+                z_pos=form.cleaned_data["z_pos"],
+                rotation=form.cleaned_data["rotation"],
+            )
+            return HttpResponseRedirect(
+                reverse("djaframe:staging_create", kwargs={"pk": scene.id}),
+            )
+        else:
+            context["staging_form"] = form
+            context["invalid_form"] = True
     return TemplateResponse(
         request,
         template_name,

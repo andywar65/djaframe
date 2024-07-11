@@ -31,9 +31,8 @@
     {{ staging_form|crispy }}
     <button class="btn btn-primary"
             type="submit"
-            hx-post="{% url 'djaframe:matimg_create' pk=object.id %}"
-            hx-target="#staged-entities"
-            hx-encoding="multipart/form-data">
+            hx-post="{% url 'djaframe:staging_create' pk=object.id %}"
+            hx-target="#staged-entities">
       {% trans "Add staged entity(!)" %}
     </button>
     <button class="btn-close"
