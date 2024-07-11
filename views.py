@@ -236,3 +236,14 @@ def staged_entity_create(request, pk):
 class SceneDetailView(HtmxMixin, DetailView):
     model = Scene
     template_name = "djaframe/htmx/scene_detail.html"
+
+
+class StagingDetailView(DetailView):
+    model = Staging
+    context_object_name = "staging"
+    template_name = "djaframe/htmx/staging_detail.html"
+
+    def get_template_names(self) -> list[str]:
+        if not self.request.htmx:
+            raise Http404("Request without HTMX headers")
+        return super().get_template_names()

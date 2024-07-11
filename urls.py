@@ -9,6 +9,7 @@ from .views import (
     SceneDetailView,
     SceneListView,
     SceneUpdateView,
+    StagingDetailView,
     entity_delete,
     material_image_create,
     material_image_delete,
@@ -31,4 +32,5 @@ urlpatterns = [
     path("scene/<pk>/update/", SceneUpdateView.as_view(), name="scene_update"),
     path("scene/<pk>/delete/", scene_delete, name="scene_delete"),
     path("scene/<pk>/staging-add/", staged_entity_create, name="staging_create"),
+    path("staging/<pk>/", StagingDetailView.as_view(), name="staging_detail"),
 ]
