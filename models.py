@@ -78,3 +78,31 @@ class Scene(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Staging(models.Model):
+    scene = models.ForeignKey(
+        Scene,
+        on_delete=models.CASCADE,
+        related_name="entities",
+    )
+    entity = models.ForeignKey(
+        Entity,
+        on_delete=models.CASCADE,
+        related_name="scenes",
+    )
+    x_pos = models.FloatField(
+        default=0,
+        verbose_name="X position",
+        help_text="Right is positive",
+    )
+    z_pos = models.FloatField(
+        default=0,
+        verbose_name="Z position",
+        help_text="Back is positive",
+    )
+    rotation = models.FloatField(
+        default=0,
+        verbose_name="Rotation",
+        help_text="Counterclockwise is positive",
+    )
