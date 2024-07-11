@@ -25,3 +25,11 @@
     </form>
   </div>
 </div>
+<div id="staged-entities"
+     class="card mx-auto mt-3"
+     style="max-width: 480px">
+  <div class="card-header">
+    {% trans "Staged entities" %}
+  </div>
+  {% include "djaframe/htmx/staged_entity_loop.html" %}
+</div>
