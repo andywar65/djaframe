@@ -1,16 +1,16 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-{% if object.material_images.all %}
-  {% for matimg in object.material_images.all %}
-    <div class="card mb-2" id="material-image-{{ matimg.id }}">
+{% if object.staged_entities.all %}
+  {% for staging in object.staged_entities.all %}
+    <div class="card mb-2" id="staged-entity-{{ staging.id }}">
       <div class="card-body">
-        <p>{{ matimg }}</p>
+        <p>{{ staging.entity }}</p>
         <a class="link link-danger"
-           hx-get="{% url 'djaframe:matimg_delete' pk=matimg.id %}"
-           hx-target="#material-images"
-           hx-confirm="{% trans 'Are you sure you want to delete this image?' %}">
-          {% trans "Delete this image" %}
+           hx-get="#"
+           hx-target="#staged-entities"
+           hx-confirm="{% trans 'Are you sure you want to delete this staged entity?' %}">
+          {% trans "Delete this staged entity(!)" %}
         </a>
       </div>
     </div>
@@ -33,7 +33,7 @@
             type="submit"
             hx-post="{% url 'djaframe:staging_create' pk=object.id %}"
             hx-target="#staged-entities">
-      {% trans "Add staged entity(!)" %}
+      {% trans "Add staged entity" %}
     </button>
     <button class="btn-close"
             title="{% trans 'Dismiss' %}"

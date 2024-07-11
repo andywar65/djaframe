@@ -84,7 +84,7 @@ class Staging(models.Model):
     scene = models.ForeignKey(
         Scene,
         on_delete=models.CASCADE,
-        related_name="entities",
+        related_name="staged_entities",
     )
     entity = models.ForeignKey(
         Entity,
