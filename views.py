@@ -247,3 +247,17 @@ class StagingDetailView(DetailView):
         if not self.request.htmx:
             raise Http404("Request without HTMX headers")
         return super().get_template_names()
+
+
+class StagingUpdateView(UpdateView):
+    model = Staging
+    form_class = StagingCreateForm
+    template_name = "djaframe/htmx/staging_update.html"
+
+    def get_template_names(self) -> list[str]:
+        if not self.request.htmx:
+            raise Http404("Request without HTMX headers")
+        return super().get_template_names()
+
+    def get_success_url(self):
+        return reverse("djaframe:staging_detail", kwargs={"pk": self.object.id})

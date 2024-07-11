@@ -7,10 +7,10 @@
       <div class="card-body">
         <p>{{ staging.id }} - {{ staging.entity }}</p>
         <a class="link link-primary"
-           hx-get="#"
+           hx-get="{% url 'djaframe:staging_update' pk=staging.id %}"
            hx-target="#staged-entity-{{ staging.id }}">
-          {% trans "Modify(!)" %}
-        </a>
+          {% trans "Modify" %}
+        </a><br>
         <a class="link link-danger"
            hx-get="#"
            hx-target="#staged-entity-{{ staging.id }}"

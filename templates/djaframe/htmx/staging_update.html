@@ -1,0 +1,18 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div class="card-body">
+  <form>
+    {{ form|crispy }}
+    <button class="btn btn-primary"
+            type="submit"
+            hx-post="{% url 'djaframe:staging_update' pk=object.id %}"
+            hx-target="#staged-entity-{{ object.id }}">
+      {% trans "Update staged entity" %}
+    </button>
+    <button class="btn-close"
+            hx-get="{% url 'djaframe:staging_detail' pk=object.id %}"
+            hx-target="#staged-entity-{{ object.id }}">
+    </button>
+  </form>
+</div>
