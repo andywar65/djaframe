@@ -232,3 +232,8 @@ def staged_entity_create(request, pk):
         template_name,
         context,
     )
+
+
+class SceneDetailView(HtmxMixin, DetailView):
+    model = Scene
+    template_name = "djaframe/htmx/scene_detail.html"

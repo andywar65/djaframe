@@ -12,10 +12,10 @@
             <tr id="scene-row-{{ object.id }}">
               <td>
                 <a class="link link-primary"
-                   hx-get="{% url 'djaframe:entity_detail' pk=object.id %}"
+                   hx-get="{% url 'djaframe:scene_detail' pk=object.id %}"
                    hx-target="#content"
                    hx-push-url="true">
-                  {{ object.title }}(!)
+                  {{ object.title }}
                 </a>
               </td>
               <td>
