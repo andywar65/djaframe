@@ -183,8 +183,7 @@ class SceneUpdateView(HtmxMixin, UpdateView):
         return context
 
     def get_success_url(self):
-        # TODO change when ready
-        return reverse("djaframe:entity_update", kwargs={"pk": self.object.id})
+        return reverse("djaframe:scene_detail", kwargs={"pk": self.object.id})
 
 
 def scene_delete(request, pk):
