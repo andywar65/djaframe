@@ -4,20 +4,7 @@
 {% if object.staged_entities.all %}
   {% for staging in object.staged_entities.all %}
     <div class="card mb-2" id="staged-entity-{{ staging.id }}">
-      <div class="card-body">
-        <p>{{ staging.id }} - {{ staging.entity }}</p>
-        <a class="link link-primary"
-           hx-get="{% url 'djaframe:staging_update' pk=staging.id %}"
-           hx-target="#staged-entity-{{ staging.id }}">
-          {% trans "Modify" %}
-        </a><br>
-        <a class="link link-danger"
-           hx-get="#"
-           hx-target="#staged-entity-{{ staging.id }}"
-           hx-confirm="{% trans 'Are you sure you want to delete this staged entity?' %}">
-          {% trans "Delete(!)" %}
-        </a>
-      </div>
+      {% include "djaframe/htmx/staging_detail.html" %}
     </div>
   {% endfor %}
 {% else %}
