@@ -189,7 +189,7 @@ class SceneUpdateView(HtmxMixin, UpdateView):
 def scene_delete(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
-    # get entity and prepare for template response
+    # get scene and prepare for template response
     scene = get_object_or_404(Scene, id=pk)
     context = {}
     template_name = "djaframe/htmx/scene_delete.html"
@@ -261,3 +261,20 @@ class StagingUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse("djaframe:staging_detail", kwargs={"pk": self.object.id})
+
+
+def staging_delete(request, pk):
+    if not request.htmx:
+        raise Http404("Request without HTMX headers")
+    # get material image and prepare for template response
+    staging = get_object_or_404(Staging, id=pk)
+    form = StagingCreateForm()
+    context = {"object": staging.scene, "staging_form": form}
+    template_name = "djaframe/htmx/staged_entity_loop.html"
+    # delete staging
+    staging.delete()
+    return TemplateResponse(
+        request,
+        template_name,
+        context,
+    )

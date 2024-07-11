@@ -16,6 +16,7 @@ from .views import (
     material_image_delete,
     scene_delete,
     staged_entity_create,
+    staging_delete,
 )
 
 app_name = "djaframe"
@@ -35,4 +36,5 @@ urlpatterns = [
     path("scene/<pk>/staging-add/", staged_entity_create, name="staging_create"),
     path("staging/<pk>/", StagingDetailView.as_view(), name="staging_detail"),
     path("staging/<pk>/update/", StagingUpdateView.as_view(), name="staging_update"),
+    path("staging/<pk>/delete/", staging_delete, name="staging_delete"),
 ]
