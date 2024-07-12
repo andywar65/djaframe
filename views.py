@@ -22,6 +22,15 @@ class HtmxMixin:
         return [self.template_name]
 
 
+class HtmxOnlyMixin:
+    """Denies request if no request.htmx"""
+
+    def get_template_names(self) -> list[str]:
+        if not self.request.htmx:
+            raise Http404("Request without HTMX headers")
+        return super().get_template_names()
+
+
 class EntityListView(HtmxMixin, ListView):
     model = Entity
     template_name = "djaframe/htmx/entity_list.html"
@@ -260,16 +269,11 @@ class StagingDetailView(DetailView):
         return super().get_template_names()
 
 
-class StagingUpdateView(PermissionRequiredMixin, UpdateView):
+class StagingUpdateView(PermissionRequiredMixin, HtmxOnlyMixin, UpdateView):
     model = Staging
     permission_required = "djaframe.change_staging"
     form_class = StagingCreateForm
     template_name = "djaframe/htmx/staging_update.html"
-
-    def get_template_names(self) -> list[str]:
-        if not self.request.htmx:
-            raise Http404("Request without HTMX headers")
-        return super().get_template_names()
 
     def get_success_url(self):
         return reverse("djaframe:staging_detail", kwargs={"pk": self.object.id})
