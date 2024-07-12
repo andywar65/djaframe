@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Any
 
+from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms import CharField, ModelForm, TextInput
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -31,8 +33,9 @@ class EntityCreateForm(ModelForm):
         fields = ("title", "description")
 
 
-class EntityCreateView(HtmxMixin, CreateView):
+class EntityCreateView(PermissionRequiredMixin, HtmxMixin, CreateView):
     model = Entity
+    permission_required = "djaframe.add_entity"
     form_class = EntityCreateForm
     template_name = "djaframe/htmx/entity_create.html"
 
@@ -60,8 +63,9 @@ class MaterialImageCreateForm(ModelForm):
         fields = ("image",)
 
 
-class EntityUpdateView(HtmxMixin, UpdateView):
+class EntityUpdateView(PermissionRequiredMixin, HtmxMixin, UpdateView):
     model = Entity
+    permission_required = "djaframe.change_entity"
     form_class = EntityUpdateForm
     template_name = "djaframe/htmx/entity_update.html"
 
@@ -74,6 +78,7 @@ class EntityUpdateView(HtmxMixin, UpdateView):
         return reverse("djaframe:entity_detail", kwargs={"pk": self.object.id})
 
 
+@permission_required("djaframe.add_materialimage")
 def material_image_create(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
@@ -102,6 +107,7 @@ def material_image_create(request, pk):
     )
 
 
+@permission_required("djaframe.delete_materialimage")
 def material_image_delete(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
@@ -130,6 +136,7 @@ class EntityDetailView(HtmxMixin, DetailView):
     template_name = "djaframe/htmx/entity_detail.html"
 
 
+@permission_required("djaframe.delete_entity")
 def entity_delete(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
@@ -157,8 +164,9 @@ class SceneCreateForm(ModelForm):
         fields = ("title", "description")
 
 
-class SceneCreateView(HtmxMixin, CreateView):
+class SceneCreateView(PermissionRequiredMixin, HtmxMixin, CreateView):
     model = Scene
+    permission_required = "djaframe.add_scene"
     form_class = SceneCreateForm
     template_name = "djaframe/htmx/scene_create.html"
 
@@ -172,8 +180,9 @@ class StagingCreateForm(ModelForm):
         fields = ("entity", "x_pos", "z_pos", "rotation")
 
 
-class SceneUpdateView(HtmxMixin, UpdateView):
+class SceneUpdateView(PermissionRequiredMixin, HtmxMixin, UpdateView):
     model = Scene
+    permission_required = "djaframe.change_scene"
     form_class = SceneCreateForm
     template_name = "djaframe/htmx/scene_update.html"
 
@@ -186,6 +195,7 @@ class SceneUpdateView(HtmxMixin, UpdateView):
         return reverse("djaframe:scene_detail", kwargs={"pk": self.object.id})
 
 
+@permission_required("djaframe.delete_scene")
 def scene_delete(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
@@ -202,6 +212,7 @@ def scene_delete(request, pk):
     )
 
 
+@permission_required("djaframe.add_staging")
 def staged_entity_create(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
@@ -249,8 +260,9 @@ class StagingDetailView(DetailView):
         return super().get_template_names()
 
 
-class StagingUpdateView(UpdateView):
+class StagingUpdateView(PermissionRequiredMixin, UpdateView):
     model = Staging
+    permission_required = "djaframe.change_staging"
     form_class = StagingCreateForm
     template_name = "djaframe/htmx/staging_update.html"
 
@@ -263,6 +275,7 @@ class StagingUpdateView(UpdateView):
         return reverse("djaframe:staging_detail", kwargs={"pk": self.object.id})
 
 
+@permission_required("djaframe.delete_staging")
 def staging_delete(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
