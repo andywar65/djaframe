@@ -198,7 +198,7 @@ class SceneCreateView(PermissionRequiredMixin, HtmxMixin, CreateView):
 class StagingCreateForm(ModelForm):
     class Meta:
         model = Staging
-        fields = ("entity", "x_pos", "z_pos", "rotation")
+        fields = ("entity", "position", "rotation", "scale")
 
 
 class SceneUpdateView(PermissionRequiredMixin, HtmxMixin, UpdateView):
@@ -253,8 +253,8 @@ def staged_entity_create(request, pk):
             Staging.objects.create(
                 scene=scene,
                 entity=form.cleaned_data["entity"],
-                x_pos=form.cleaned_data["x_pos"],
-                z_pos=form.cleaned_data["z_pos"],
+                position=form.cleaned_data["position"],
+                scale=form.cleaned_data["scale"],
                 rotation=form.cleaned_data["rotation"],
             )
             return HttpResponseRedirect(

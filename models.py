@@ -91,18 +91,18 @@ class Staging(models.Model):
         on_delete=models.CASCADE,
         related_name="scenes",
     )
-    x_pos = models.FloatField(
-        default=0,
-        verbose_name="X position",
-        help_text="Right is positive",
+    position = models.CharField(
+        default="0 0 0",
+        max_length=50,
+        help_text="Left/Right - Up/Down - In/Out",
     )
-    z_pos = models.FloatField(
-        default=0,
-        verbose_name="Z position",
-        help_text="Back is positive",
+    rotation = models.CharField(
+        default="0 0 0",
+        max_length=50,
+        help_text="Pitch - Yaw - Roll",
     )
-    rotation = models.FloatField(
-        default=0,
-        verbose_name="Rotation",
-        help_text="Counterclockwise is positive",
+    scale = models.CharField(
+        default="1 1 1",
+        max_length=50,
+        help_text="Width - Heigth - Depth",
     )
