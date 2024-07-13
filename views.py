@@ -135,9 +135,8 @@ def material_image_delete(request, pk):
         raise Http404("Request without HTMX headers")
     # get material image and prepare for template response
     matimg = get_object_or_404(MaterialImage, id=pk)
-    form = MaterialImageCreateForm()
-    context = {"object": matimg.entity, "matimg_form": form}
-    template_name = "djaframe/htmx/material_image_loop.html"
+    context = {"object": matimg.entity}
+    template_name = "djaframe/htmx/material_image_delete.html"
     # delete file and material image
     try:
         file = Path(matimg.image.path)
