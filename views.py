@@ -221,11 +221,6 @@ class StagingListView(HtmxOnlyMixin, DetailView):
     model = Scene
     template_name = "djaframe/htmx/staged_entity_loop.html"
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context["staging_form"] = StagingCreateForm()
-        return context
-
 
 @permission_required("djaframe.delete_scene")
 def scene_delete(request, pk):
@@ -264,12 +259,19 @@ def staged_entity_create(request, pk):
                 rotation=form.cleaned_data["rotation"],
             )
             return HttpResponseRedirect(
-                reverse("djaframe:staging_list", kwargs={"pk": scene.id}),
-                headers={"HX-Retarget": "#staged-entities"},
+                reverse("djaframe:staging_create", kwargs={"pk": scene.id})
+                + "?refresh=True",
             )
         else:
             context["staging_form"] = form
             context["invalid_form"] = True
+    elif request.method == "GET" and "refresh" in request.GET:
+        return TemplateResponse(
+            request,
+            template_name,
+            context,
+            headers={"HX-Trigger": "refreshStagings"},
+        )
     return TemplateResponse(
         request,
         template_name,
