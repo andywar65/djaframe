@@ -1,42 +1,47 @@
 {% load crispy_forms_tags %}
 {% load i18n %}
 
-<div class="card mx-auto" style="max-width: 480px">
-  <div class="card-header">
-    <h4 class="card-title">{% trans "Update scene"%}: {{ object.title }}</h4>
-  </div>
-  <div class="card-body">
-    <form>
-      {{ form|crispy }}
-      <button class="btn btn-primary"
-              type="submit"
-              hx-post="{% url 'djaframe:scene_update' pk=object.id %}"
-              hx-target="#content"
-              hx-push-url="true">
-        {% trans "Update scene" %}
-      </button>
-      <button class="btn-close"
-              title="{% trans 'Dismiss' %}"
-              hx-get="{% url 'djaframe:scene_detail' pk=object.id %}"
-              hx-target="#content"
-              hx-push-url="true">
-      </button>
-    </form>
-  </div>
-</div>
-<div class="card mx-auto mt-3"
-     style="max-width: 480px">
-  <div class="card-header">
-    {% trans "Staged entities" %}
-  </div>
-  <div class="card-body">
-    <div id="staged-entities"
-         hx-get="{% url 'djaframe:staging_list' pk=object.id %}"
-         hx-trigger="refreshStagings from:body">
-      {% include "djaframe/htmx/staged_entity_loop.html" %}
+<div class="row mx-auto" style="max-width: 960px">
+  <div class="col">
+    <div class="card mb-3 mx-auto" style="max-width: 480px">
+      <div class="card-header">
+        <h4 class="card-title">{% trans "Update scene"%}: {{ object.title }}</h4>
+      </div>
+      <div class="card-body">
+        <form>
+          {{ form|crispy }}
+          <button class="btn btn-primary"
+                  type="submit"
+                  hx-post="{% url 'djaframe:scene_update' pk=object.id %}"
+                  hx-target="#content"
+                  hx-push-url="true">
+            {% trans "Update scene" %}
+          </button>
+          <button class="btn-close"
+                  title="{% trans 'Dismiss' %}"
+                  hx-get="{% url 'djaframe:scene_detail' pk=object.id %}"
+                  hx-target="#content"
+                  hx-push-url="true">
+          </button>
+        </form>
+      </div>
     </div>
-    <div id="staging-create">
-      {% include "djaframe/htmx/staging_create.html" %}
+  </div>
+  <div class="col col-xl-6 col-lg-6 col-md-12 col-12">
+    <div class="card mx-auto" style="max-width: 480px">
+      <div class="card-header">
+        {% trans "Staged entities" %}
+      </div>
+      <div class="card-body">
+        <div id="staged-entities"
+             hx-get="{% url 'djaframe:staging_list' pk=object.id %}"
+             hx-trigger="refreshStagings from:body">
+          {% include "djaframe/htmx/staged_entity_loop.html" %}
+        </div>
+        <div id="staging-create">
+          {% include "djaframe/htmx/staging_create.html" %}
+        </div>
+      </div>
     </div>
   </div>
 </div>
