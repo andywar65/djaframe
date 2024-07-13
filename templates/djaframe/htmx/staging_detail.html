@@ -10,7 +10,8 @@
     </a>
     <a class="link link-danger col"
        hx-get="{% url 'djaframe:staging_delete' pk=staging.id %}"
-       hx-target="#staged-entities"
+       hx-target="#staged-entity-{{ staging.id }}"
+       hx-swap="outerHTML"
        hx-confirm="{% trans 'Are you sure you want to delete this staged entity?' %}">
       {% trans "Delete" %}
     </a>

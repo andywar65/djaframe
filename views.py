@@ -296,9 +296,8 @@ def staging_delete(request, pk):
         raise Http404("Request without HTMX headers")
     # get material image and prepare for template response
     staging = get_object_or_404(Staging, id=pk)
-    form = StagingCreateForm()
-    context = {"object": staging.scene, "staging_form": form}
-    template_name = "djaframe/htmx/staged_entity_loop.html"
+    context = {}
+    template_name = "djaframe/htmx/staging_delete.html"
     # delete staging
     staging.delete()
     return TemplateResponse(
