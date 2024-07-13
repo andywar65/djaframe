@@ -30,7 +30,13 @@
   <div class="card-header">
     {% trans "Material images" %}
   </div>
-  <div class="card-body" id="material-images">
+  <div class="card-body"
+       id="material-images"
+       hx-get="{% url 'djaframe:matimg_list' pk=object.id %}"
+       hx-trigger="refreshImages from:body">
     {% include "djaframe/htmx/material_image_loop.html" %}
+  </div>
+  <div class="card-footer" id="matimg-create">
+    {% include "djaframe/htmx/material_image_create.html" %}
   </div>
 </div>

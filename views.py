@@ -91,11 +91,6 @@ class MaterialImageListView(HtmxOnlyMixin, DetailView):
     model = Entity
     template_name = "djaframe/htmx/material_image_loop.html"
 
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-        context = super().get_context_data(**kwargs)
-        context["matimg_form"] = MaterialImageCreateForm()
-        return context
-
 
 @permission_required("djaframe.add_materialimage")
 def material_image_create(request, pk):
@@ -104,7 +99,7 @@ def material_image_create(request, pk):
     entity = get_object_or_404(Entity, id=pk)
     form = MaterialImageCreateForm()
     context = {"object": entity, "matimg_form": form}
-    template_name = "djaframe/htmx/material_image_loop.html"
+    template_name = "djaframe/htmx/material_image_create.html"
     if request.method == "POST":
         form = MaterialImageCreateForm(request.POST, request.FILES)
         if form.is_valid():
@@ -114,11 +109,19 @@ def material_image_create(request, pk):
                 image=form.cleaned_data["image"],
             )
             return HttpResponseRedirect(
-                reverse("djaframe:matimg_create", kwargs={"pk": entity.id}),
+                reverse("djaframe:matimg_create", kwargs={"pk": entity.id})
+                + "?refresh=True",
             )
         else:
             context["matimg_form"] = form
             context["invalid_form"] = True
+    elif request.method == "GET" and "refresh" in request.GET:
+        return TemplateResponse(
+            request,
+            template_name,
+            context,
+            headers={"HX-Trigger": "refreshImages"},
+        )
     return TemplateResponse(
         request,
         template_name,
