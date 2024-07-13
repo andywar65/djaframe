@@ -87,6 +87,16 @@ class EntityUpdateView(PermissionRequiredMixin, HtmxMixin, UpdateView):
         return reverse("djaframe:entity_detail", kwargs={"pk": self.object.id})
 
 
+class MaterialImageListView(HtmxOnlyMixin, DetailView):
+    model = Entity
+    template_name = "djaframe/htmx/material_image_loop.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["matimg_form"] = MaterialImageCreateForm()
+        return context
+
+
 @permission_required("djaframe.add_materialimage")
 def material_image_create(request, pk):
     if not request.htmx:
