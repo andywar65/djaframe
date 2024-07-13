@@ -14,7 +14,7 @@
     <button class="btn btn-primary"
             type="submit"
             hx-post="{% url 'djaframe:staging_create' pk=object.id %}"
-            hx-target="#staged-entities">
+            hx-target="#staging-create">
       {% trans "Add staged entity" %}
     </button>
     <button class="btn-close"

@@ -238,7 +238,7 @@ def staged_entity_create(request, pk):
     scene = get_object_or_404(Scene, id=pk)
     form = StagingCreateForm()
     context = {"object": scene, "staging_form": form}
-    template_name = "djaframe/htmx/staged_entity_loop.html"
+    template_name = "djaframe/htmx/staging_create.html"
     if request.method == "POST":
         form = StagingCreateForm(request.POST)
         if form.is_valid():
@@ -251,7 +251,8 @@ def staged_entity_create(request, pk):
                 rotation=form.cleaned_data["rotation"],
             )
             return HttpResponseRedirect(
-                reverse("djaframe:staging_create", kwargs={"pk": scene.id}),
+                reverse("djaframe:staging_list", kwargs={"pk": scene.id}),
+                headers={"HX-Retarget": "#staged-entities"},
             )
         else:
             context["staging_form"] = form
