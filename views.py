@@ -309,9 +309,9 @@ class StagingUpdateView(PermissionRequiredMixin, HtmxOnlyMixin, UpdateView):
 def staging_delete(request, pk):
     if not request.htmx:
         raise Http404("Request without HTMX headers")
-    # get material image and prepare for template response
+    # get staging and prepare for template response
     staging = get_object_or_404(Staging, id=pk)
-    context = {}
+    context = {"object": staging.scene}
     template_name = "djaframe/htmx/staging_delete.html"
     # delete staging
     staging.delete()

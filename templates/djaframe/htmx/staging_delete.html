@@ -1,6 +1,8 @@
 {% load i18n %}
 
 <div class="alert alert-danger"
-     script="on load wait 2s then remove me">
+     hx-get="{% url 'djaframe:staging_list' pk=object.id %}"
+     hx-target="#staged-entities"
+     hx-trigger="load delay:300ms">
   {% trans "Deleting..." %}<span class="spinner-border spinner-border-sm"></span>
 </div>
