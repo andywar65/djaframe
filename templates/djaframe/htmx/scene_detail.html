@@ -6,6 +6,7 @@
   </div>
   <div class="card-body">
     <a-scene style="width: 100%; height: 600px" embedded>
+      {% if object.image %}<a-sky src="{{ object.image.url }}"></a-sky>{% endif %}
       {% if object.staged_entities.all %}
         {% for staging in object.staged_entities.all %}
           <a-entity position="{{ staging.position }}"

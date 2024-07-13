@@ -12,7 +12,8 @@
               type="submit"
               hx-post="{% url 'djaframe:scene_create' %}"
               hx-target="#content"
-              hx-push-url="true">
+              hx-push-url="true"
+              hx-encoding="multipart/form-data">
         {% trans "Add scene" %}
       </button>
       <button class="btn-close"

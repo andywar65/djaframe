@@ -182,7 +182,7 @@ class SceneListView(HtmxMixin, ListView):
 class SceneCreateForm(ModelForm):
     class Meta:
         model = Scene
-        fields = ("title", "description")
+        fields = ("title", "description", "image")
 
 
 class SceneCreateView(PermissionRequiredMixin, HtmxMixin, CreateView):

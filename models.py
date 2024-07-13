@@ -71,6 +71,12 @@ class Scene(models.Model):
 
     title = models.CharField(max_length=50)
     description = models.TextField(max_length=500, null=True, blank=True)
+    image = models.ImageField(
+        upload_to="uploads/djaframe/scene/",
+        null=True,
+        blank=True,
+        help_text="Equirectangular image",
+    )
 
     class Meta:
         verbose_name = "Scene"
