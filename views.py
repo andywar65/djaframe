@@ -204,6 +204,16 @@ class SceneUpdateView(PermissionRequiredMixin, HtmxMixin, UpdateView):
         return reverse("djaframe:scene_detail", kwargs={"pk": self.object.id})
 
 
+class StagingListView(HtmxOnlyMixin, DetailView):
+    model = Scene
+    template_name = "djaframe/htmx/staged_entity_loop.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context["staging_form"] = StagingCreateForm()
+        return context
+
+
 @permission_required("djaframe.delete_scene")
 def scene_delete(request, pk):
     if not request.htmx:

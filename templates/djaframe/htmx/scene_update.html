@@ -29,7 +29,10 @@
   <div class="card-header">
     {% trans "Staged entities" %}
   </div>
-  <div class="card-body" id="staged-entities">
+  <div class="card-body"
+       id="staged-entities"
+       hx-get="{% url 'djaframe:staging_list' pk=object.id %}"
+       hx-trigger="refreshStagedEntities from:body">
     {% include "djaframe/htmx/staged_entity_loop.html" %}
   </div>
 </div>
