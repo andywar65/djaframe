@@ -1,0 +1,20 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div id="matimg-create-form"
+     {% if not invalid_form %}style="display: none"{% endif %}>
+  <form>
+    {{ matimg_form|crispy }}
+    <button class="btn btn-primary"
+            type="submit"
+            hx-post="{% url 'djaframe:matimg_create' pk=object.id %}"
+            hx-target="#material-images"
+            hx-encoding="multipart/form-data">
+      {% trans "Add material image" %}
+    </button>
+    <button class="btn-close"
+            title="{% trans 'Dismiss' %}"
+            script="on click hide #matimg-create-form then show #matimg-create-button">
+    </button>
+  </form>
+</div>
