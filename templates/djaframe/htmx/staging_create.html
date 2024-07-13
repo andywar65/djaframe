@@ -1,0 +1,25 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<button id="staging-create-button"
+        class="btn btn-bg btn-success"
+        script="on click hide me then show #staging-create-form"
+        {% if invalid_form %}style="display: none"{% endif %}>
+  {% trans "Add staged entity" %}
+</button>
+<div id="staging-create-form"
+     {% if not invalid_form %}style="display: none"{% endif %}>
+  <form>
+    {{ staging_form|crispy }}
+    <button class="btn btn-primary"
+            type="submit"
+            hx-post="{% url 'djaframe:staging_create' pk=object.id %}"
+            hx-target="#staged-entities">
+      {% trans "Add staged entity" %}
+    </button>
+    <button class="btn-close"
+            title="{% trans 'Dismiss' %}"
+            script="on click hide #staging-create-form then show #staging-create-button">
+    </button>
+  </form>
+</div>
