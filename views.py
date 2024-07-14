@@ -63,7 +63,15 @@ class EntityUpdateForm(ModelForm):
 
     class Meta:
         model = Entity
-        fields = ("title", "obj_model", "mtl_model", "switch", "color", "description")
+        fields = (
+            "title",
+            "gltf_model",
+            "obj_model",
+            "mtl_model",
+            "switch",
+            "color",
+            "description",
+        )
 
 
 class MaterialImageCreateForm(ModelForm):

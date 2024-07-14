@@ -1,11 +1,18 @@
 from django.contrib import admin
 
-from .models import Entity, Scene, Staging
+from .models import Entity, MaterialImage, Scene, Staging
+
+
+class MaterialImageInline(admin.TabularInline):
+    model = MaterialImage
 
 
 @admin.register(Entity)
 class EntityAdmin(admin.ModelAdmin):
     list_display = ("title", "description")
+    inlines = [
+        MaterialImageInline,
+    ]
 
 
 @admin.register(Scene)
