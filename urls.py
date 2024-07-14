@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 
 from .views import (
     EntityCreateView,
@@ -23,6 +24,7 @@ from .views import (
 
 app_name = "djaframe"
 urlpatterns = [
+    path("", RedirectView.as_view(pattern_name="djaframe:scene_list")),
     path("entity/list/", EntityListView.as_view(), name="entity_list"),
     path("entity/add/", EntityCreateView.as_view(), name="entity_create"),
     path("entity/<pk>/", EntityDetailView.as_view(), name="entity_detail"),
