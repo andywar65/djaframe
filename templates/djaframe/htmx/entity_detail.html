@@ -7,13 +7,22 @@
   <div class="card-body">
     <a-scene style="width: 100%; height: 600px" embedded>
       <a-assets>
-        <a-asset-item id="obj-file" src="{{ object.obj_model.url }}"></a-asset-item>
-        {% if object.mtl_model %}<a-asset-item id="mtl-file" src="{{ object.mtl_model.url }}"></a-asset-item>{% endif %}
+        {% if object.gltf_model %}
+          <a-asset-item id="gltf-file" src="{{ object.gltf_model.url }}"></a-asset-item>
+        {% else %}
+          <a-asset-item id="obj-file" src="{{ object.obj_model.url }}"></a-asset-item>
+          {% if object.mtl_model %}<a-asset-item id="mtl-file" src="{{ object.mtl_model.url }}"></a-asset-item>{% endif %}
+        {% endif %}
       </a-assets>
-      <a-entity obj-model="obj: #obj-file{% if object.mtl_model %}; mtl: #mtl-file{% endif %}"
-                {% if object.switch %}rotation="-90 0 0"{% endif %}
-                {% if not object.mtl_model %}material="color: {{ object.color }}"{% endif %}>
-      </a-entity>
+      {% if object.gltf_model %}
+        <a-entity gltf-model="#gltf-file">
+        </a-entity>
+      {% else %}
+        <a-entity obj-model="obj: #obj-file{% if object.mtl_model %}; mtl: #mtl-file{% endif %}"
+                  {% if object.switch %}rotation="-90 0 0"{% endif %}
+                  {% if not object.mtl_model %}material="color: {{ object.color }}"{% endif %}>
+        </a-entity>
+      {% endif %}
     </a-scene>
   </div>
   <div class="card-footer">
