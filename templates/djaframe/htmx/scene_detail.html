@@ -6,42 +6,49 @@
   </div>
   <div class="card-body">
     <a-scene style="width: 100%; height: 600px" embedded>
-      {% if object.image %}<a-sky src="{{ object.image.url }}"></a-sky>{% endif %}
-      {% if object.staged_entities.all %}
-        {% for staging in object.staged_entities.all %}
-          <a-entity position="{{ staging.position }}"
-                    rotation="{{ staging.rotation }}"
-                    scale="{{ staging.scale }}">
-            <a-entity obj-model="obj: url({{ staging.entity.obj_model.url }}){% if staging.entity.mtl_model %}; mtl: url({{ staging.entity.mtl_model.url }}){% endif %}"
-                      {% if staging.entity.switch %}rotation="-90 0 0"{% endif %}
-                      {% if not staging.entity.mtl_model %}material="color: {{ staging.entity.color }}"{% endif %}>
+      <a-assets>
+        {% with stagings=object.staged_entities.all %}
+          {% if object.image %}<img id="sky-image" src="{{ object.image.url }}">{% endif %}
+          {% for staging in stagings %}
+            <a-asset-item id="obj-file-{{ staging.entity.id }}" src="{{ staging.entity.obj_model.url }}"></a-asset-item>
+            {% if object.mtl_model %}<a-asset-item id="mtl-file-{{ staging.entity.id }}" src="{{ staging.entity.mtl_model.url }}"></a-asset-item>{% endif %}
+          {% endfor %}
+          </a-assets>
+          {% if object.image %}<a-sky src="#sky-image"></a-sky>{% endif %}
+          {% for staging in stagings %}
+            <a-entity position="{{ staging.position }}"
+                      rotation="{{ staging.rotation }}"
+                      scale="{{ staging.scale }}">
+              <a-entity obj-model="obj: #obj-file-{{ staging.entity.id }}{% if staging.entity.mtl_model %}; mtl: #mtl-file-{{ staging.entity.id }}{% endif %}"
+                        {% if staging.entity.switch %}rotation="-90 0 0"{% endif %}
+                        {% if not staging.entity.mtl_model %}material="color: {{ staging.entity.color }}"{% endif %}>
+              </a-entity>
             </a-entity>
-          </a-entity>
-        {% endfor %}
-      {% endif %}
-    </a-scene>
-  </div>
-  <div class="card-footer">
-    <div class="row text-center">
-      <a class="link link-primary col"
-         hx-get="{% url 'djaframe:scene_list' %}"
-         hx-target="#content"
-         hx-push-url="true">
-        {% trans "Back to list"%}
-      </a>
-      <a class="link link-primary col"
-         hx-get="{% url 'djaframe:scene_update' pk=object.id %}"
-         hx-target="#content"
-         hx-push-url="true">
-        {% trans "Modify" %}
-      </a>
-      <a class="link link-danger col"
-         hx-get="{% url 'djaframe:scene_delete' pk=object.id %}"
-         hx-target="#scene-detail-card"
-         hx-swap="outerHTML"
-         hx-confirm="{% trans 'Are you sure you want to delete this scene?' %}">
-        {% trans "Delete" %}
-      </a>
+          {% endfor %}
+        {% endwith %}
+      </a-scene>
+    </div>
+    <div class="card-footer">
+      <div class="row text-center">
+        <a class="link link-primary col"
+           hx-get="{% url 'djaframe:scene_list' %}"
+           hx-target="#content"
+           hx-push-url="true">
+          {% trans "Back to list"%}
+        </a>
+        <a class="link link-primary col"
+           hx-get="{% url 'djaframe:scene_update' pk=object.id %}"
+           hx-target="#content"
+           hx-push-url="true">
+          {% trans "Modify" %}
+        </a>
+        <a class="link link-danger col"
+           hx-get="{% url 'djaframe:scene_delete' pk=object.id %}"
+           hx-target="#scene-detail-card"
+           hx-swap="outerHTML"
+           hx-confirm="{% trans 'Are you sure you want to delete this scene?' %}">
+          {% trans "Delete" %}
+        </a>
+      </div>
     </div>
   </div>
-</div>
