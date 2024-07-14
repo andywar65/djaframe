@@ -1,6 +1,13 @@
 # django-a-frame
 A [Django](https://djangoproject.com) app that shows 3D objects with [A-Frame](https://aframe.io/docs/1.6.0/introduction/)
 ## Requirements
-This project is tested on Django 5.0.7 and Python 3.12. it uses [HTMX](https://htmx.org) and [django-htmx](https://django-htmx.readthedocs.io/en/latest/) to manage interactions. I use [Bootstrap 5](https://getbootstrap.com/) for styling. A `SQLite` database is enough.
+This project is tested on Django 5.0.7 and Python 3.12. it uses [HTMX](https://htmx.org) and [django-htmx](https://django-htmx.readthedocs.io/en/latest/) to manage interactions. I use [Bootstrap 5](https://getbootstrap.com/) for styling and [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/en/latest/) to help with forms. A `SQLite` database is enough.
 ## Installation
-In your Django project root, clone this repository (`git clone https://github.com/andywar65/djaframe`) and be sure to install required packages (`python -m pip install -r requirements.txt`). Add `djaframe.apps.DjaframeConfig` to `INSTALLED_APPS` and `path("3D/", include("djaframe.urls", namespace="djaframe"))` to your project `urls.py`, migrate.
+In your Django project root, clone this repository (`git clone https://github.com/andywar65/djaframe`) and be sure to install required packages (`python -m pip install -r requirements.txt`). Add `djaframe.apps.DjaframeConfig` to `INSTALLED_APPS` and `path("3D/", include("djaframe.urls", namespace="djaframe"))` to your project `urls.py`, then migrate. Reference to the included `base.html` template to see which libraries are uploaded.
+## Usage
+Navigate to `http://127.0.0.1:8000/3D/` and you will be presented with a `Scene list`. Of course there still are no scenes, so navigate to the `Entity list`: we first have to create some entities, and then stage them on the scene. Click on the `Add entity` button, enter a `Title` and create the entity, then enter an `*.obj file`. If provided, enter the `*.mtl file` and eventual images. If no material is provided, you can add a color. Check the `Switch` field if your object was created in CAD: A-Frame coordinate system is rotated with respect to CAD coordinate system. As you update the entity, you will be redirected to an A-Frame window to check if everything is ok.
+Now that you have some entities, go back to the `Scene list` and create a scene. Enter a `Title` and eventually an `Equirectangular image` to simulate the environment, create the scene then `Add staged entities`. Select one of the `Entities` you created previously, adjust `position`, `rotation` and `scale`. Stage as many entities you want (even multiple specimens of the same entity), then update the Scene. You will be redirected to an A-Frame window to check if everything is ok.
+## Next steps
+Create entities with basic geometries, load `*.gltf files`, add lights to scenes.
+## Tests
+Testing is underway using [pytest-django](https://pytest-django.readthedocs.io/en/latest/) for the very first time instead of `unittests` and [Kolo](https://docs.kolo.app/en/latest/howto/generate-tests.html) to generate tests.
