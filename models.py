@@ -12,6 +12,22 @@ class Entity(models.Model):
 
     title = models.CharField(max_length=50)
     description = models.TextField(max_length=500, null=True, blank=True)
+    gltf_model = models.FileField(
+        "GLTF file",
+        help_text="Overrides all other entries",
+        max_length=200,
+        upload_to=entity_directory_path,
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=[
+                    "gltf",
+                    "glb",
+                ]
+            )
+        ],
+        null=True,
+        blank=True,
+    )
     obj_model = models.FileField(
         "OBJ file",
         max_length=200,
@@ -24,6 +40,7 @@ class Entity(models.Model):
             )
         ],
         null=True,
+        blank=True,
     )
     mtl_model = models.FileField(
         "MTL file",
