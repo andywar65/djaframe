@@ -10,8 +10,12 @@
         {% with stagings=object.staged_entities.all %}
           {% if object.image %}<img id="sky-image" src="{{ object.image.url }}">{% endif %}
           {% for staging in stagings %}
-            <a-asset-item id="obj-file-{{ staging.entity.id }}" src="{{ staging.entity.obj_model.url }}"></a-asset-item>
-            {% if object.mtl_model %}<a-asset-item id="mtl-file-{{ staging.entity.id }}" src="{{ staging.entity.mtl_model.url }}"></a-asset-item>{% endif %}
+            {% if staging.entity.gltf_model %}
+              <a-asset-item id="gltf-file-{{ staging.entity.id }}" src="{{ staging.entity.gltf_model.url }}"></a-asset-item>
+            {% else %}
+              <a-asset-item id="obj-file-{{ staging.entity.id }}" src="{{ staging.entity.obj_model.url }}"></a-asset-item>
+              {% if object.mtl_model %}<a-asset-item id="mtl-file-{{ staging.entity.id }}" src="{{ staging.entity.mtl_model.url }}"></a-asset-item>{% endif %}
+            {% endif %}
           {% endfor %}
           </a-assets>
           {% if object.image %}<a-sky src="#sky-image"></a-sky>{% endif %}
@@ -19,10 +23,14 @@
             <a-entity position="{{ staging.position }}"
                       rotation="{{ staging.rotation }}"
                       scale="{{ staging.scale }}">
-              <a-entity obj-model="obj: #obj-file-{{ staging.entity.id }}{% if staging.entity.mtl_model %}; mtl: #mtl-file-{{ staging.entity.id }}{% endif %}"
-                        {% if staging.entity.switch %}rotation="-90 0 0"{% endif %}
-                        {% if not staging.entity.mtl_model %}material="color: {{ staging.entity.color }}"{% endif %}>
-              </a-entity>
+              {% if staging.entity.gltf_model %}
+                <a-entity gltf-model="#gltf-file-{{ staging.entity.id }}"></a-entity>
+              {% else %}
+                <a-entity obj-model="obj: #obj-file-{{ staging.entity.id }}{% if staging.entity.mtl_model %}; mtl: #mtl-file-{{ staging.entity.id }}{% endif %}"
+                          {% if staging.entity.switch %}rotation="-90 0 0"{% endif %}
+                          {% if not staging.entity.mtl_model %}material="color: {{ staging.entity.color }}"{% endif %}>
+                </a-entity>
+              {% endif %}
             </a-entity>
           {% endfor %}
         {% endwith %}

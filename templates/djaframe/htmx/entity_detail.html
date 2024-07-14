@@ -15,8 +15,7 @@
         {% endif %}
       </a-assets>
       {% if object.gltf_model %}
-        <a-entity gltf-model="#gltf-file">
-        </a-entity>
+        <a-entity gltf-model="#gltf-file"></a-entity>
       {% else %}
         <a-entity obj-model="obj: #obj-file{% if object.mtl_model %}; mtl: #mtl-file{% endif %}"
                   {% if object.switch %}rotation="-90 0 0"{% endif %}
