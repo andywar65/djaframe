@@ -159,6 +159,14 @@ class DxfScene(models.Model):
         super().__init__(*args, **kwargs)
         self.__original_dxf = self.dxf
 
+    def save(self, *args, **kwargs):
+        # save and eventually upload DXF
+        super().save(*args, **kwargs)
+        if self.__original_dxf != self.dxf:
+            all_objects = self.dxf_objects.all()
+            if all_objects.exists():
+                all_objects.delete()
+
 
 class DxfObject(models.Model):
     scene = models.ForeignKey(
