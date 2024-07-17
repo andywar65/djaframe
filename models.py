@@ -129,3 +129,22 @@ class Staging(models.Model):
         max_length=50,
         help_text="Width - Heigth - Depth",
     )
+
+
+class DxfScene(models.Model):
+
+    title = models.CharField(max_length=50)
+    description = models.TextField(max_length=500, null=True, blank=True)
+    dxf = models.FileField(
+        "DXF file",
+        help_text="Please, transform 3DSolids into Meshes before upload",
+        max_length=200,
+        upload_to=entity_directory_path,
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=[
+                    "dxf",
+                ]
+            )
+        ],
+    )

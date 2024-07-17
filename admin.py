@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Entity, MaterialImage, Scene, Staging
+from .models import DxfScene, Entity, MaterialImage, Scene, Staging
 
 
 class MaterialImageInline(admin.TabularInline):
@@ -23,3 +23,8 @@ class SceneAdmin(admin.ModelAdmin):
 @admin.register(Staging)
 class StagingAdmin(admin.ModelAdmin):
     list_display = ("id",)
+
+
+@admin.register(DxfScene)
+class DxfSceneAdmin(admin.ModelAdmin):
+    list_display = ("title", "description")
