@@ -148,3 +148,23 @@ class DxfScene(models.Model):
             )
         ],
     )
+
+
+class DxfObject(models.Model):
+    scene = models.ForeignKey(
+        DxfScene,
+        on_delete=models.CASCADE,
+        related_name="dxf_objects",
+    )
+    obj = models.FileField(
+        max_length=200,
+        upload_to=entity_directory_path,
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=[
+                    "obj",
+                ]
+            )
+        ],
+    )
+    color = models.CharField(default="#FFFFFF", max_length=7)
