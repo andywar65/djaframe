@@ -149,6 +149,16 @@ class DxfScene(models.Model):
         ],
     )
 
+    class Meta:
+        verbose_name = "DXF Scene"
+        verbose_name_plural = "DXF Scenes"
+
+    __original_dxf = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__original_dxf = self.dxf
+
 
 class DxfObject(models.Model):
     scene = models.ForeignKey(
