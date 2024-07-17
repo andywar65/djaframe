@@ -4,6 +4,7 @@ import ezdxf
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from ezdxf import colors
+from ezdxf.addons import meshex
 
 
 def entity_directory_path(instance, filename):
@@ -153,7 +154,7 @@ class DxfScene(models.Model):
         "DXF file",
         help_text="Please, transform 3DSolids into Meshes before upload",
         max_length=200,
-        upload_to=entity_directory_path,
+        upload_to="uploads/djaframe/dxf-scene/",
         validators=[
             FileExtensionValidator(
                 allowed_extensions=[
@@ -180,7 +181,7 @@ class DxfScene(models.Model):
             all_objects = self.dxf_objects.all()
             if all_objects.exists():
                 all_objects.delete()
-                self.create_objs_from_dxf()
+            self.create_objs_from_dxf()
 
     def create_objs_from_dxf(self):
         doc = ezdxf.readfile(self.dxf.path)
@@ -195,6 +196,9 @@ class DxfScene(models.Model):
             layer_table[layer.dxf.name] = {
                 "color": color,
             }
+        for m in msp.query("MESH"):
+            obj = meshex.obj_dumps(m)
+            print(obj)
 
 
 class DxfObject(models.Model):
