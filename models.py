@@ -1,7 +1,9 @@
 from pathlib import Path
 
+import ezdxf
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from ezdxf import colors
 
 
 def entity_directory_path(instance, filename):
@@ -131,6 +133,18 @@ class Staging(models.Model):
     )
 
 
+"""
+    Collection of utilities
+"""
+
+
+def cad2hex(color):
+    if isinstance(color, tuple):
+        return "#{:02x}{:02x}{:02x}".format(color[0], color[1], color[2])
+    rgb24 = colors.DXF_DEFAULT_COLORS[color]
+    return "#{:06X}".format(rgb24)
+
+
 class DxfScene(models.Model):
 
     title = models.CharField(max_length=50)
@@ -166,6 +180,21 @@ class DxfScene(models.Model):
             all_objects = self.dxf_objects.all()
             if all_objects.exists():
                 all_objects.delete()
+                self.create_objs_from_dxf()
+
+    def create_objs_from_dxf(self):
+        doc = ezdxf.readfile(self.dxf.path)
+        msp = doc.modelspace()  # noqa
+        # prepare layer table
+        layer_table = {}
+        for layer in doc.layers:
+            if layer.rgb:
+                color = cad2hex(layer.rgb)
+            else:
+                color = cad2hex(layer.color)
+            layer_table[layer.dxf.name] = {
+                "color": color,
+            }
 
 
 class DxfObject(models.Model):
