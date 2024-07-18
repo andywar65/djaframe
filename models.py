@@ -1,10 +1,13 @@
 from pathlib import Path
 
 import ezdxf
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from ezdxf import colors
 from ezdxf.addons import meshex
+from ezdxf.math import Vec3
+from ezdxf.render import MeshBuilder
 
 
 def entity_directory_path(instance, filename):
@@ -197,8 +200,20 @@ class DxfScene(models.Model):
                 "color": color,
             }
         for m in msp.query("MESH"):
-            obj = meshex.obj_dumps(m)
-            print(obj)
+            mb = MeshBuilder()
+            mb.vertices = Vec3.list(m.vertices)
+            mb.faces = m.faces
+            filename = "object.obj"
+            f = open(filename, "w")
+            f.write(meshex.obj_dumps(mb))
+            f.close()
+            with open(filename, "rb") as f:
+                content = f.read()
+                DxfObject.objects.create(
+                    scene=self,
+                    obj=SimpleUploadedFile("object.obj", content, "text/plain"),
+                    color=layer_table[m.dxf.layer]["color"],
+                )
 
 
 class DxfObject(models.Model):
@@ -209,7 +224,7 @@ class DxfObject(models.Model):
     )
     obj = models.FileField(
         max_length=200,
-        upload_to=entity_directory_path,
+        upload_to="uploads/djaframe/dxf-scene/",
         validators=[
             FileExtensionValidator(
                 allowed_extensions=[
