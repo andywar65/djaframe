@@ -10,7 +10,7 @@ from django.template.response import TemplateResponse
 from django.urls import reverse
 from django.views.generic import CreateView, DetailView, ListView, UpdateView
 
-from .models import Entity, MaterialImage, Scene, Staging
+from .models import DxfScene, Entity, MaterialImage, Scene, Staging
 
 
 class HtmxMixin:
@@ -327,3 +327,8 @@ def staging_delete(request, pk):
         template_name,
         context,
     )
+
+
+class DxfSceneDetailView(HtmxMixin, DetailView):
+    model = DxfScene
+    template_name = "djaframe/htmx/dxf_detail.html"
