@@ -25,10 +25,10 @@
   <div class="card-footer">
     <div class="row text-center">
       <a class="link link-primary col"
-         hx-get="#"
+         hx-get="{% url 'djaframe:dxf_list' %}"
          hx-target="#content"
          hx-push-url="true">
-        {% trans "Back to list(!)"%}
+        {% trans "Back to list"%}
       </a>
       <a class="link link-primary col"
          hx-get="{% url 'djaframe:dxf_update' pk=object.id %}"

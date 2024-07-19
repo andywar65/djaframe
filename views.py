@@ -329,6 +329,11 @@ def staging_delete(request, pk):
     )
 
 
+class DxfSceneListView(HtmxMixin, ListView):
+    model = DxfScene
+    template_name = "djaframe/htmx/dxf_list.html"
+
+
 class DxfSceneCreateForm(ModelForm):
     class Meta:
         model = DxfScene

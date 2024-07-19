@@ -18,9 +18,9 @@
       </button>
       <button class="btn-close"
               title="{% trans 'Dismiss' %}"
-              hx-get="#"
+              hx-get="{% url 'djaframe:dxf_list' %}"
               hx-target="#content"
-              hx-push-url="true">!
+              hx-push-url="true">
       </button>
     </form>
   </div>
