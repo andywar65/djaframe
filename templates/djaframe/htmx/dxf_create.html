@@ -1,0 +1,27 @@
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+<div class="card mx-auto" style="max-width: 480px">
+  <div class="card-header">
+    <h4 class="card-title">{% trans "Create DXF scene"%}</h4>
+  </div>
+  <div class="card-body">
+    <form>
+      {{ form|crispy }}
+      <button class="btn btn-primary"
+              type="submit"
+              hx-post="{% url 'djaframe:dxf_create' %}"
+              hx-target="#content"
+              hx-push-url="true"
+              hx-encoding="multipart/form-data">
+        {% trans "Add DXF scene" %}
+      </button>
+      <button class="btn-close"
+              title="{% trans 'Dismiss' %}"
+              hx-get="#"
+              hx-target="#content"
+              hx-push-url="true">!
+      </button>
+    </form>
+  </div>
+</div>

@@ -329,6 +329,22 @@ def staging_delete(request, pk):
     )
 
 
+class DxfSceneCreateForm(ModelForm):
+    class Meta:
+        model = DxfScene
+        fields = ("title", "description", "dxf")
+
+
+class DxfSceneCreateView(PermissionRequiredMixin, HtmxMixin, CreateView):
+    model = DxfScene
+    permission_required = "djaframe.add_dxfscene"
+    form_class = DxfSceneCreateForm
+    template_name = "djaframe/htmx/dxf_create.html"
+
+    def get_success_url(self):
+        return reverse("djaframe:dxf_detail", kwargs={"pk": self.object.id})
+
+
 class DxfSceneDetailView(HtmxMixin, DetailView):
     model = DxfScene
     template_name = "djaframe/htmx/dxf_detail.html"
