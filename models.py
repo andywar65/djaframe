@@ -1,7 +1,13 @@
 from pathlib import Path
 
+import ezdxf
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.validators import FileExtensionValidator
 from django.db import models
+from ezdxf import colors
+from ezdxf.addons import meshex
+from ezdxf.math import Vec3
+from ezdxf.render import MeshBuilder
 
 
 def entity_directory_path(instance, filename):
@@ -131,6 +137,18 @@ class Staging(models.Model):
     )
 
 
+"""
+    Collection of utilities
+"""
+
+
+def cad2hex(color):
+    if isinstance(color, tuple):
+        return "#{:02x}{:02x}{:02x}".format(color[0], color[1], color[2])
+    rgb24 = colors.DXF_DEFAULT_COLORS[color]
+    return "#{:06X}".format(rgb24)
+
+
 class DxfScene(models.Model):
 
     title = models.CharField(max_length=50)
@@ -139,7 +157,7 @@ class DxfScene(models.Model):
         "DXF file",
         help_text="Please, transform 3DSolids into Meshes before upload",
         max_length=200,
-        upload_to=entity_directory_path,
+        upload_to="uploads/djaframe/dxf-scene/",
         validators=[
             FileExtensionValidator(
                 allowed_extensions=[
@@ -148,6 +166,54 @@ class DxfScene(models.Model):
             )
         ],
     )
+
+    class Meta:
+        verbose_name = "DXF Scene"
+        verbose_name_plural = "DXF Scenes"
+
+    __original_dxf = None
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.__original_dxf = self.dxf
+
+    def save(self, *args, **kwargs):
+        # save and eventually upload DXF
+        super().save(*args, **kwargs)
+        if self.__original_dxf != self.dxf:
+            all_objects = self.dxf_objects.all()
+            if all_objects.exists():
+                all_objects.delete()
+            self.create_objs_from_dxf()
+
+    def create_objs_from_dxf(self):
+        doc = ezdxf.readfile(self.dxf.path)
+        msp = doc.modelspace()  # noqa
+        # prepare layer table
+        layer_table = {}
+        for layer in doc.layers:
+            if layer.rgb:
+                color = cad2hex(layer.rgb)
+            else:
+                color = cad2hex(layer.color)
+            layer_table[layer.dxf.name] = {
+                "color": color,
+            }
+        for m in msp.query("MESH"):
+            mb = MeshBuilder()
+            mb.vertices = Vec3.list(m.vertices)
+            mb.faces = m.faces
+            filename = "object.obj"
+            f = open(filename, "w")
+            f.write(meshex.obj_dumps(mb))
+            f.close()
+            with open(filename, "rb") as f:
+                content = f.read()
+                DxfObject.objects.create(
+                    scene=self,
+                    obj=SimpleUploadedFile("object.obj", content, "text/plain"),
+                    color=layer_table[m.dxf.layer]["color"],
+                )
 
 
 class DxfObject(models.Model):
@@ -158,7 +224,7 @@ class DxfObject(models.Model):
     )
     obj = models.FileField(
         max_length=200,
-        upload_to=entity_directory_path,
+        upload_to="uploads/djaframe/dxf-scene/",
         validators=[
             FileExtensionValidator(
                 allowed_extensions=[
