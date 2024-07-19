@@ -17,6 +17,7 @@ from .views import (
     StagingDetailView,
     StagingListView,
     StagingUpdateView,
+    dxf_scene_delete,
     entity_delete,
     material_image_create,
     material_image_delete,
@@ -49,4 +50,5 @@ urlpatterns = [
     path("dxf-scene/add/", DxfSceneCreateView.as_view(), name="dxf_create"),
     path("dxf-scene/<pk>/", DxfSceneDetailView.as_view(), name="dxf_detail"),
     path("dxf-scene/<pk>/update/", DxfSceneUpdateView.as_view(), name="dxf_update"),
+    path("dxf-scene/<pk>/delete/", dxf_scene_delete, name="dxf_delete"),
 ]

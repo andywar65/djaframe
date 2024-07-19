@@ -358,3 +358,20 @@ class DxfSceneUpdateView(PermissionRequiredMixin, HtmxMixin, UpdateView):
 
     def get_success_url(self):
         return reverse("djaframe:dxf_detail", kwargs={"pk": self.object.id})
+
+
+@permission_required("djaframe.delete_dxfscene")
+def dxf_scene_delete(request, pk):
+    if not request.htmx:
+        raise Http404("Request without HTMX headers")
+    # get scene and prepare for template response
+    scene = get_object_or_404(DxfScene, id=pk)
+    context = {}
+    template_name = "djaframe/htmx/dxf_delete.html"
+    # delete scene
+    scene.delete()
+    return TemplateResponse(
+        request,
+        template_name,
+        context,
+    )
