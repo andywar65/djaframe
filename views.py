@@ -348,3 +348,13 @@ class DxfSceneCreateView(PermissionRequiredMixin, HtmxMixin, CreateView):
 class DxfSceneDetailView(HtmxMixin, DetailView):
     model = DxfScene
     template_name = "djaframe/htmx/dxf_detail.html"
+
+
+class DxfSceneUpdateView(PermissionRequiredMixin, HtmxMixin, UpdateView):
+    model = DxfScene
+    permission_required = "djaframe.change_dxfscene"
+    form_class = DxfSceneCreateForm
+    template_name = "djaframe/htmx/dxf_update.html"
+
+    def get_success_url(self):
+        return reverse("djaframe:dxf_detail", kwargs={"pk": self.object.id})

@@ -4,6 +4,7 @@ from django.views.generic import RedirectView
 from .views import (
     DxfSceneCreateView,
     DxfSceneDetailView,
+    DxfSceneUpdateView,
     EntityCreateView,
     EntityDetailView,
     EntityListView,
@@ -47,4 +48,5 @@ urlpatterns = [
     path("staging/<pk>/delete/", staging_delete, name="staging_delete"),
     path("dxf-scene/add/", DxfSceneCreateView.as_view(), name="dxf_create"),
     path("dxf-scene/<pk>/", DxfSceneDetailView.as_view(), name="dxf_detail"),
+    path("dxf-scene/<pk>/update/", DxfSceneUpdateView.as_view(), name="dxf_update"),
 ]
