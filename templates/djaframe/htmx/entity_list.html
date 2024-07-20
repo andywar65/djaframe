@@ -21,22 +21,26 @@
               <td>
                 {{ object.description|truncatewords:10 }}
               </td>
-              <td>
-                <a class="link link-primary"
-                   hx-get="{% url 'djaframe:entity_update' pk=object.id %}"
-                   hx-target="#content"
-                   hx-push-url="true">
-                  {% trans "Modify" %}
-                </a>
-              </td>
-              <td>
-                <a class="link link-danger"
-                   hx-get="{% url 'djaframe:entity_delete' pk=object.id %}"
-                   hx-target="#entity-row-{{ object.id }}"
-                   hx-confirm="{% trans 'Are you sure you want to delete this entity?' %}">
-                  {% trans "Delete" %}
-                </a>
-              </td>
+              {% if perms.djaframe.change_entity %}
+                <td>
+                  <a class="link link-primary"
+                     hx-get="{% url 'djaframe:entity_update' pk=object.id %}"
+                     hx-target="#content"
+                     hx-push-url="true">
+                    {% trans "Modify" %}
+                  </a>
+                </td>
+              {% endif %}
+              {% if perms.djaframe.delete_entity %}
+                <td>
+                  <a class="link link-danger"
+                     hx-get="{% url 'djaframe:entity_delete' pk=object.id %}"
+                     hx-target="#entity-row-{{ object.id }}"
+                     hx-confirm="{% trans 'Are you sure you want to delete this entity?' %}">
+                    {% trans "Delete" %}
+                  </a>
+                </td>
+              {% endif %}
             </tr>
           {% endfor %}
         </tbody>
@@ -44,12 +48,14 @@
     {% else %}
       <p>{% trans "No entities yet" %}</p>
     {% endif %}
-    <button class="btn btn-success"
-            hx-get="{% url 'djaframe:entity_create' %}"
-            hx-target="#content"
-            hx-push-url="true">
-      {% trans "Add entity" %}
-    </button>
+    {% if perms.djaframe.add_entity %}
+      <button class="btn btn-success"
+              hx-get="{% url 'djaframe:entity_create' %}"
+              hx-target="#content"
+              hx-push-url="true">
+        {% trans "Add entity" %}
+      </button>
+    {% endif %}
     <a class="link link-primary"
        hx-get="{% url 'djaframe:scene_list' %}"
        hx-target="#content"

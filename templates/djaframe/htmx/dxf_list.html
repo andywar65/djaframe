@@ -21,22 +21,26 @@
               <td>
                 {{ object.description|truncatewords:10 }}
               </td>
-              <td>
-                <a class="link link-primary"
-                   hx-get="{% url 'djaframe:dxf_update' pk=object.id %}"
-                   hx-target="#content"
-                   hx-push-url="true">
-                  {% trans "Modify" %}
-                </a>
-              </td>
-              <td>
-                <a class="link link-danger"
-                   hx-get="{% url 'djaframe:dxf_delete' pk=object.id %}"
-                   hx-target="#scene-row-{{ object.id }}"
-                   hx-confirm="{% trans 'Are you sure you want to delete this DXF scene?' %}">
-                  {% trans "Delete" %}
-                </a>
-              </td>
+              {% if perms.djaframe.change_dxfscene %}
+                <td>
+                  <a class="link link-primary"
+                     hx-get="{% url 'djaframe:dxf_update' pk=object.id %}"
+                     hx-target="#content"
+                     hx-push-url="true">
+                    {% trans "Modify" %}
+                  </a>
+                </td>
+              {% endif %}
+              {% if perms.djaframe.delete_dxfscene %}
+                <td>
+                  <a class="link link-danger"
+                     hx-get="{% url 'djaframe:dxf_delete' pk=object.id %}"
+                     hx-target="#scene-row-{{ object.id }}"
+                     hx-confirm="{% trans 'Are you sure you want to delete this DXF scene?' %}">
+                    {% trans "Delete" %}
+                  </a>
+                </td>
+              {% endif %}
             </tr>
           {% endfor %}
         </tbody>
@@ -44,12 +48,14 @@
     {% else %}
       <p>{% trans "No DXF scenes yet" %}</p>
     {% endif %}
-    <button class="btn btn-success"
-            hx-get="{% url 'djaframe:dxf_create' %}"
-            hx-target="#content"
-            hx-push-url="true">
-      {% trans "Add DXF scene" %}
-    </button>
+    {% if perms.djaframe.add_dxfscene %}
+      <button class="btn btn-success"
+              hx-get="{% url 'djaframe:dxf_create' %}"
+              hx-target="#content"
+              hx-push-url="true">
+        {% trans "Add DXF scene" %}
+      </button>
+    {% endif %}
     <a class="link link-primary"
        hx-get="{% url 'djaframe:scene_list' %}"
        hx-target="#content"
