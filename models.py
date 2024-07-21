@@ -2,7 +2,7 @@ from pathlib import Path
 
 import ezdxf
 from django.conf import settings
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files import File
 from django.core.validators import FileExtensionValidator
 from django.db import models
 from ezdxf import colors
@@ -205,18 +205,16 @@ class DxfScene(models.Model):
             mb.vertices = Vec3.list(m.vertices)
             mb.faces = m.faces
             # I'm creating a file and then uploading it
-            # There must be a better way!
-            filename = Path(settings.MEDIA_ROOT).joinpath(
+            # Is there a better way?
+            path = Path(settings.MEDIA_ROOT).joinpath(
                 "uploads/djaframe/dxf-scene/temp.obj"
             )
-            f = open(filename, "w")
-            f.write(meshex.obj_dumps(mb))
-            f.close()
-            with open(filename, "rb") as f:
-                content = f.read()
+            with open(path, "w") as f:
+                f.write(meshex.obj_dumps(mb))
+            with open(path, "r") as f:
                 DxfObject.objects.create(
                     scene=self,
-                    obj=SimpleUploadedFile("object.obj", content, "text/plain"),
+                    obj=File(f, name="object.obj"),
                     color=layer_table[m.dxf.layer]["color"],
                 )
 
