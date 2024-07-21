@@ -1,6 +1,7 @@
 from pathlib import Path
 
 import ezdxf
+from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.validators import FileExtensionValidator
 from django.db import models
@@ -203,7 +204,11 @@ class DxfScene(models.Model):
             mb = MeshBuilder()
             mb.vertices = Vec3.list(m.vertices)
             mb.faces = m.faces
-            filename = "object.obj"
+            # I'm creating a file and then uploading it
+            # There must be a better way!
+            filename = Path(settings.MEDIA_ROOT).joinpath(
+                "uploads/djaframe/dxf-scene/temp.obj"
+            )
             f = open(filename, "w")
             f.write(meshex.obj_dumps(mb))
             f.close()
