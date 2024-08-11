@@ -189,7 +189,7 @@ class DxfScene(models.Model):
 
     def create_objs_from_dxf(self):
         doc = ezdxf.readfile(self.dxf.path)
-        msp = doc.modelspace()  # noqa
+        msp = doc.modelspace()
         # prepare layer table
         layer_table = {}
         for layer in doc.layers:
@@ -200,6 +200,7 @@ class DxfScene(models.Model):
             layer_table[layer.dxf.name] = {
                 "color": color,
             }
+        # lines = msp.query('LINE[layer=="construction"]')
         for m in msp.query("MESH"):
             mb = MeshBuilder()
             mb.vertices = Vec3.list(m.vertices)
