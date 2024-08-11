@@ -188,35 +188,29 @@ class DxfScene(models.Model):
             self.create_objs_from_dxf()
 
     def create_objs_from_dxf(self):
+        path = Path(settings.MEDIA_ROOT).joinpath("uploads/djaframe/dxf-scene/temp.obj")
         doc = ezdxf.readfile(self.dxf.path)
         msp = doc.modelspace()
-        # prepare layer table
-        layer_table = {}
+        # iterate between layers
         for layer in doc.layers:
             if layer.rgb:
                 color = cad2hex(layer.rgb)
             else:
                 color = cad2hex(layer.color)
-            layer_table[layer.dxf.name] = {
-                "color": color,
-            }
-        # lines = msp.query('LINE[layer=="construction"]')
-        for m in msp.query("MESH"):
-            mb = MeshBuilder()
-            mb.vertices = Vec3.list(m.vertices)
-            mb.faces = m.faces
-            # I'm creating a file and then uploading it
-            # Is there a better way?
-            path = Path(settings.MEDIA_ROOT).joinpath(
-                "uploads/djaframe/dxf-scene/temp.obj"
-            )
             with open(path, "w") as f:
-                f.write(meshex.obj_dumps(mb))
+                i = 0
+                for m in msp.query(f"MESH[layer=='{layer.dxf.name}']"):
+                    f.write(f"g Object_{i}")
+                    mb = MeshBuilder()
+                    mb.vertices = Vec3.list(m.vertices)
+                    mb.faces = m.faces
+                    f.write(meshex.obj_dumps(mb))
+                    i += 1
             with open(path, "r") as f:
                 DxfObject.objects.create(
                     scene=self,
                     obj=File(f, name="object.obj"),
-                    color=layer_table[m.dxf.layer]["color"],
+                    color=color,
                 )
 
 
