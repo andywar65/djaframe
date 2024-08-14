@@ -188,7 +188,11 @@ class DxfScene(models.Model):
             self.create_objs_from_dxf()
 
     def create_objs_from_dxf(self):
+        # prepare two helper files
         path = Path(settings.MEDIA_ROOT).joinpath("uploads/djaframe/dxf-scene/temp.obj")
+        path2 = Path(settings.MEDIA_ROOT).joinpath(
+            "uploads/djaframe/dxf-scene/temp2.obj"
+        )
         doc = ezdxf.readfile(self.dxf.path)
         msp = doc.modelspace()
         # iterate between layers
@@ -197,16 +201,33 @@ class DxfScene(models.Model):
                 color = cad2hex(layer.rgb)
             else:
                 color = cad2hex(layer.color)
+            # write first file recording vertex number
             with open(path, "w") as f:
-                i = 0
                 for m in msp.query(f"MESH[layer=='{layer.dxf.name}']"):
-                    f.write(f"g Object_{i}")
                     mb = MeshBuilder()
                     mb.vertices = Vec3.list(m.vertices)
                     mb.faces = m.faces
                     f.write(meshex.obj_dumps(mb))
-                    i += 1
-            with open(path, "r") as f:
+                    f.write(f"# total vertices={len(m.vertices)}\n")
+            # pass values from one file to the other
+            with open(path, "r") as f, open(path2, "w") as f2:
+                # file is empty, pass
+                if len(f.readlines()) == 0:
+                    continue
+                # rewind file!
+                f.seek(0)
+                f2.write("# Generated with django-a-frame\n")
+                # offset face number by total vertex number
+                n = 0
+                for line in f:
+                    if line.startswith("v"):
+                        f2.write(line)
+                    elif line.startswith("# total vertices="):
+                        n += int(line.split("=")[1])
+                    elif line.startswith("f"):
+                        fc = line.split(" ")
+                        f2.write(f"f {int(fc[1])+n} {int(fc[2])+n} {int(fc[3])+n}\n")
+            with open(path2, "r") as f:
                 DxfObject.objects.create(
                     scene=self,
                     obj=File(f, name="object.obj"),
