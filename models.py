@@ -218,6 +218,11 @@ class Staging(models.Model):
         max_length=50,
         help_text="Width - Heigth - Depth",
     )
+    color = models.CharField(default="#FFFFFF", max_length=7)
+    data = models.JSONField(
+        null=True,
+        blank=True,
+    )
 
 
 """

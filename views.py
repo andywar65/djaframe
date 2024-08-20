@@ -204,9 +204,17 @@ class SceneCreateView(PermissionRequiredMixin, HtmxMixin, CreateView):
 
 
 class StagingCreateForm(ModelForm):
+    color = CharField(
+        label="Color",
+        required=True,
+        widget=TextInput(
+            attrs={"class": "form-control form-control-color", "type": "color"}
+        ),
+    )
+
     class Meta:
         model = Staging
-        fields = ("entity", "position", "rotation", "scale")
+        fields = ("entity", "position", "rotation", "scale", "color")
 
 
 class SceneUpdateView(PermissionRequiredMixin, HtmxMixin, UpdateView):
