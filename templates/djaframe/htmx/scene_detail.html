@@ -28,7 +28,7 @@
               {% else %}
                 <a-entity obj-model="obj: #obj-file-{{ staging.entity.id }}{% if staging.entity.mtl_model %}; mtl: #mtl-file-{{ staging.entity.id }}{% endif %}"
                           {% if staging.entity.switch %}rotation="-90 0 0"{% endif %}
-                          {% if not staging.entity.mtl_model %}material="color: {{ staging.entity.color }}"{% endif %}>
+                          {% if not staging.entity.mtl_model %}material="color: {{ staging.color }}"{% endif %}>
                 </a-entity>
               {% endif %}
             </a-entity>
