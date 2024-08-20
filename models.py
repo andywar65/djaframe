@@ -188,6 +188,7 @@ class Scene(models.Model):
                     scene=self,
                     entity=entity,
                     color=color,
+                    data={"title": f"Layer {layer.dxf.name}"},
                 )
 
 
