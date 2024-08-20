@@ -64,7 +64,6 @@ class Entity(models.Model):
         blank=True,
     )
     switch = models.BooleanField(default=False, help_text="Switch Z/Y axis")
-    color = models.CharField(default="#FFFFFF", max_length=7)
 
     class Meta:
         verbose_name = "Entity"

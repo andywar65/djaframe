@@ -53,14 +53,6 @@ class EntityCreateView(PermissionRequiredMixin, HtmxMixin, CreateView):
 
 
 class EntityUpdateForm(ModelForm):
-    color = CharField(
-        label="Color",
-        required=True,
-        widget=TextInput(
-            attrs={"class": "form-control form-control-color", "type": "color"}
-        ),
-    )
-
     class Meta:
         model = Entity
         fields = (
@@ -69,7 +61,6 @@ class EntityUpdateForm(ModelForm):
             "obj_model",
             "mtl_model",
             "switch",
-            "color",
             "description",
         )
 
