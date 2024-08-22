@@ -235,6 +235,26 @@ class Scene(models.Model):
                 )
                 entity.obj_model = File(f, name="object.obj")
                 entity.save()
+            for ins in msp.query(f"INSERT[name=='{block.name}']"):
+                if ins.attribs:
+                    attrib_dict = {}
+                    for attr in ins.attribs:
+                        attrib_dict[attr.dxf.tag] = attr.dxf.text
+                Staging.objects.create(
+                    scene=self,
+                    entity=entity,
+                    color=layer_dict[ins.dxf.layer],
+                    position=(
+                        f"{ins.dxf.insert[0]} {ins.dxf.insert[2]} {-ins.dxf.insert[1]}"
+                    ),
+                    rotation=f"0 {ins.dxf.rotation} 0",
+                    scale=f"{ins.dxf.xscale} 1 {ins.dxf.yscale}",
+                    data={
+                        "Block": block.name,
+                        "Layer": ins.dxf.layer,
+                        "attribs": attrib_dict,
+                    },
+                )
 
 
 class Staging(models.Model):
@@ -282,7 +302,12 @@ class Staging(models.Model):
         else:
             out = ""
             for key, value in self.data.items():
-                out += f"{key}: {value}\n"
+                if key == "attribs":
+                    out += "Attributes:\n"
+                    for t, v in value.items():
+                        out += f"--{t}: {v}\n"
+                else:
+                    out += f"{key}: {value}\n"
             return out
 
 
