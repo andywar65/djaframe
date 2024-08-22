@@ -22,4 +22,4 @@ class SceneAdmin(admin.ModelAdmin):
 
 @admin.register(Staging)
 class StagingAdmin(admin.ModelAdmin):
-    list_display = ("id",)
+    list_display = ("id", "scene", "entity")

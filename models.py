@@ -237,10 +237,13 @@ class Staging(models.Model):
         return f"Staging {self.id}"
 
     def popupContent(self):
-        out = ""
-        for key, value in self.data.items():
-            out += f"{key}: {value}\n"
-        return out
+        if not self.data:
+            return
+        else:
+            out = ""
+            for key, value in self.data.items():
+                out += f"{key}: {value}\n"
+            return out
 
 
 """
