@@ -193,7 +193,7 @@ class Scene(models.Model):
                     scene=self,
                     entity=entity,
                     color=color,
-                    data={"title": f"Layer {name}"},
+                    data={"Layer": name},
                 )
 
 
@@ -228,6 +228,19 @@ class Staging(models.Model):
         null=True,
         blank=True,
     )
+
+    class Meta:
+        verbose_name = "Staging"
+        verbose_name_plural = "Stagings"
+
+    def __str__(self):
+        return f"Staging {self.id}"
+
+    def popupContent(self):
+        out = ""
+        for key, value in self.data.items():
+            out += f"{key}: {value}\n"
+        return out
 
 
 """

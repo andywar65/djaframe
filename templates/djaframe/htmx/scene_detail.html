@@ -10,11 +10,11 @@
         <a-camera>
           <a-cursor></a-cursor>
           {% for staging in stagings %}
-            {% if staging.data %}
+            {% if staging.popupContent %}
               <a-entity id="text-staging-{{ staging.id }}"
                         geometry="primitive: plane; height: 0; width: 0"
                         material="color: white"
-                        text="width: 0.5; value: {{ staging.data.title }}; color: black; wrapCount: 40"
+                        text="width: 0.5; value: {{ staging.popupContent }}; color: black; wrapCount: 40"
                         visible="false"
                         position="0.3 0 -0.5">
               </a-entity>
