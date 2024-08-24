@@ -39,7 +39,7 @@ class EntityListView(HtmxMixin, ListView):
 
 class EntityUnstagedListView(HtmxMixin, ListView):
     model = Entity
-    template_name = "djaframe/htmx/entity_list.html"  # change this
+    template_name = "djaframe/htmx/entity_unstaged_list.html"
 
     def get_queryset(self) -> QuerySet[Any]:
         staged = Staging.objects.values_list("entity", flat=True)
