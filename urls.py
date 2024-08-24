@@ -16,6 +16,7 @@ from .views import (
     StagingListView,
     StagingUpdateView,
     entity_delete,
+    entity_unstaged_delete,
     material_image_create,
     material_image_delete,
     scene_delete,
@@ -29,6 +30,9 @@ urlpatterns = [
     path("entity/", EntityListView.as_view(), name="entity_list"),
     path("entity/add/", EntityCreateView.as_view(), name="entity_create"),
     path("entity/unstaged/", EntityUnstagedListView.as_view(), name="entity_unstaged"),
+    path(
+        "entity/unstaged/delete/", entity_unstaged_delete, name="entity_unstaged_delete"
+    ),
     path("entity/<pk>/", EntityDetailView.as_view(), name="entity_detail"),
     path("entity/<pk>/update/", EntityUpdateView.as_view(), name="entity_update"),
     path("entity/<pk>/delete/", entity_delete, name="entity_delete"),

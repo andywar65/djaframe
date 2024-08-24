@@ -1,6 +1,6 @@
 {% load i18n %}
 
-<div class="card mx-auto" style="max-width: 960px">
+<div id="entity-unstaged-card" class="card mx-auto" style="max-width: 960px">
   <div class="card-header">
     <h4 class="card-title">{% trans "Unstaged Entity list"%}</h4>
   </div>
@@ -48,13 +48,16 @@
     {% else %}
       <p>{% trans "No unstaged entities" %}</p>
     {% endif %}
-    {% if perms.djaframe.add_entity %}
-      <button class="btn btn-success"
-              hx-get="{% url 'djaframe:entity_create' %}"
-              hx-target="#content"
-              hx-push-url="true">
-        {% trans "Add entity" %}
-      </button>
+    {% if perms.djaframe.delete_entity %}
+      {% if object_list %}
+        <button class="btn btn-danger"
+                hx-get="{% url 'djaframe:entity_unstaged_delete' %}"
+                hx-target="#entity-unstaged-card"
+                hx-swap="outerHTML"
+                hx-confirm="{% trans 'Are you sure you want to delete all unstaged entities?' %}">
+          {% trans "Delete all" %}
+        </button>
+      {% endif %}
     {% endif %}
     <a class="link link-primary"
        hx-get="{% url 'djaframe:entity_list' %}"

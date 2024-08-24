@@ -185,6 +185,24 @@ def entity_delete(request, pk):
     )
 
 
+@permission_required("djaframe.delete_entity")
+def entity_unstaged_delete(request):
+    if not request.htmx:
+        raise Http404("Request without HTMX headers")
+    # get entities and prepare for template response
+    staged = Staging.objects.values_list("entity", flat=True)
+    staged = list(set(staged))
+    # delete entities
+    Entity.objects.exclude(id__in=staged).delete()
+    context = {}
+    template_name = "djaframe/htmx/entity_delete.html"
+    return TemplateResponse(
+        request,
+        template_name,
+        context,
+    )
+
+
 class SceneListView(HtmxMixin, ListView):
     model = Scene
     template_name = "djaframe/htmx/scene_list.html"
