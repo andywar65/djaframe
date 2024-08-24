@@ -3,6 +3,7 @@ from typing import Any
 
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.db.models.query import QuerySet
 from django.forms import CharField, ModelForm, TextInput
 from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -34,6 +35,17 @@ class HtmxOnlyMixin:
 class EntityListView(HtmxMixin, ListView):
     model = Entity
     template_name = "djaframe/htmx/entity_list.html"
+
+
+class EntityUnstagedListView(HtmxMixin, ListView):
+    model = Entity
+    template_name = "djaframe/htmx/entity_list.html"  # change this
+
+    def get_queryset(self) -> QuerySet[Any]:
+        staged = Staging.objects.values_list("entity", flat=True)
+        staged = list(set(staged))
+        qs = Entity.objects.exclude(id__in=staged)
+        return qs
 
 
 class EntityCreateForm(ModelForm):
