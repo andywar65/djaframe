@@ -240,15 +240,14 @@ class Scene(models.Model):
                     attrib_dict = {}
                     for attr in ins.attribs:
                         attrib_dict[attr.dxf.tag] = attr.dxf.text
+                origin = ins.ucs().origin
                 Staging.objects.create(
                     scene=self,
                     entity=entity,
                     color=layer_dict[ins.dxf.layer],
-                    position=(
-                        f"{ins.dxf.insert[0]} {ins.dxf.insert[2]} {-ins.dxf.insert[1]}"
-                    ),
+                    position=(f"{origin[0]} {origin[2]} {-origin[1]}"),
                     rotation=f"0 {ins.dxf.rotation} 0",
-                    scale=f"{ins.dxf.xscale} 1 {ins.dxf.yscale}",
+                    scale=f"{ins.dxf.xscale} {ins.dxf.zscale} {ins.dxf.yscale}",
                     data={
                         "Block": block.name,
                         "Layer": ins.dxf.layer,
