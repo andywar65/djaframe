@@ -57,6 +57,13 @@
       </button>
     {% endif %}
     <a class="link link-primary"
+       hx-get="{% url 'djaframe:entity_unstaged' %}"
+       hx-target="#content"
+       hx-push-url="true">
+      {% trans "Unstaged entities" %}
+    </a>
+    -
+    <a class="link link-primary"
        hx-get="{% url 'djaframe:scene_list' %}"
        hx-target="#content"
        hx-push-url="true">
