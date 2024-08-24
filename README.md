@@ -13,11 +13,11 @@ Alternatively you can upload a `*.gltf file`, which is the recommended format in
 Now that you have some entities, go back to the `Scene list` and create a scene. Enter a `Title` and eventually an `Equirectangular image` to simulate the environment (skip the `DXF` field), create the scene then `Add staged entities`. Select one of the `Entities` you created previously, adjust `color`, `position`, `rotation` and `scale`. Stage as many entities you want (even multiple specimens of the same entity), then update the Scene. You will be redirected to an A-Frame window to check if everything is ok.
 ### Scenes from a DXF
 It's possible to create `*.obj files` directly from `CAD`. Generate a `DXF` file with some `meshes` (if you have `3DSolids` you have to convert them to `Meshes`). Navigate to `http://127.0.0.1:8000/3D/` and click on the `Add scene` button. Enter title, description and upload a DXF file. Thanks to the outstanding library [ezdxf](https://ezdxf.mozman.at/) meshes are converted to `*.obj files`, and you will be redirected to the Scene Update panel to check if everything is ok. `CAD Layer` colors will be associated to stagings. Switch to the A-Frame window, and move the cursor on imported entities: a popup will notify its Layer name.
-WARNING: updating the `DXF file` will remove all existing objects from the Scene (entities will NOT be deleted).
+WARNING: updating the `DXF file` will remove all entities staged on the Scene, but not the entities. If you want to remove orphan entities navigate to `http://127.0.0.1:8000/3D/entities/unstaged/` and click the `Delete All` button.
 Also `Blocks` with `meshes` will be imported, each `Block` will be transformed into an `Entity`, while `Insertions` will be transformed into `Stagings`. Switch to the A-Frame window, and move the cursor on imported blocks: a popup will notify its Block name, Layer name and a list of block attributes (if any).
-WARNING, some restrictions occour for insertions: only X and Y scaling, only Z rotation.
+WARNING, some restrictions occour for insertions when pitch rotation is 90 or -90 degrees.
 ### A-Frame Visual Inspector
-Once in the A-Frame window, if you press `Ctrl + Alt + i` you will open the [A-Frame Visual Inspector](https://aframe.io/docs/1.6.0/introduction/visual-inspector-and-dev-tools.html). It's possible to modify objects in the Inspector, save a `*.gltf file` from the whole scene, and add it to an `Entity`.
+Once in the A-Frame window, if you press `Ctrl + Alt + i` you will open the [A-Frame Visual Inspector](https://aframe.io/docs/1.6.0/introduction/visual-inspector-and-dev-tools.html). It's possible to modify objects in the Inspector, save a `*.gltf file` from the whole scene, and then add it to an `Entity`.
 ## Next steps
 Create entities with basic geometries, add lights to scenes.
 ## Tests
