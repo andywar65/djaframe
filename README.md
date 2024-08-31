@@ -1,9 +1,9 @@
 # django-a-frame
 A [Django](https://djangoproject.com) app that shows 3D objects with [A-Frame](https://aframe.io/docs/1.6.0/introduction/)
 ## Requirements
-This project is tested on Django 5.0.7 and Python 3.12. it uses [HTMX](https://htmx.org) and [django-htmx](https://django-htmx.readthedocs.io/en/latest/) to manage interactions. I use [Bootstrap 5](https://getbootstrap.com/) for styling and [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/en/latest/) to help with forms. A `SQLite` database is enough.
+This project is tested on Django 5.1 and Python 3.12. it uses [HTMX](https://htmx.org) and [django-htmx](https://django-htmx.readthedocs.io/en/latest/) to manage interactions. I use [Bootstrap 5](https://getbootstrap.com/) for styling and [Django Crispy Forms](https://django-crispy-forms.readthedocs.io/en/latest/) to help with forms. A `SQLite` database is enough.
 ## Installation
-In your Django project root, clone this repository (`git clone https://github.com/andywar65/djaframe`) and be sure to install required packages (`python -m pip install -r requirements.txt`). Add `djaframe.apps.DjaframeConfig` to `INSTALLED_APPS` and `path("3D/", include("djaframe.urls", namespace="djaframe"))` to your project `urls.py`, then migrate. Reference to the included `base.html` template to see which libraries are uploaded.
+In your Django project root, clone this repository (`git clone https://github.com/andywar65/djaframe`) and be sure to install required packages (`python -m pip install -r requirements.txt`). Add `djaframe.apps.DjaframeConfig` to `INSTALLED_APPS` and `path("3D/", include("djaframe.urls", namespace="djaframe"))` to your project `urls.py`, then migrate. Reference to the included `base.html` template to see which libraries are required to be uploaded.
 ## Usage
 Navigate to `http://127.0.0.1:8000/3D/` and you will be presented with a `Scene list`. Of course there still are no scenes, so navigate to the `Entity list`: we first have to create some entities, and then stage them on the scene.
 ### Entities
