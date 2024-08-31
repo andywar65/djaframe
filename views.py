@@ -221,6 +221,8 @@ class SceneCreateView(PermissionRequiredMixin, HtmxMixin, CreateView):
     template_name = "djaframe/htmx/scene_create.html"
 
     def get_success_url(self):
+        if self.object.dxf:
+            return reverse("djaframe:scene_detail", kwargs={"pk": self.object.id})
         return reverse("djaframe:scene_update", kwargs={"pk": self.object.id})
 
 
