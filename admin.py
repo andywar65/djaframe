@@ -13,6 +13,11 @@ class EntityAdmin(admin.ModelAdmin):
     inlines = [
         MaterialImageInline,
     ]
+    actions = ["check_file_names"]
+
+    @admin.action(description="Check material/image file names")
+    def check_file_names(self, request, queryset):
+        pass
 
 
 @admin.register(Scene)
