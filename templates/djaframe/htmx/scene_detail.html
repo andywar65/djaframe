@@ -28,7 +28,7 @@
               <a-asset-item id="gltf-file-{{ staging.entity.id }}" src="{{ staging.entity.gltf_model.url }}"></a-asset-item>
             {% else %}
               <a-asset-item id="obj-file-{{ staging.entity.id }}" src="{{ staging.entity.obj_model.url }}"></a-asset-item>
-              {% if object.mtl_model %}<a-asset-item id="mtl-file-{{ staging.entity.id }}" src="{{ staging.entity.mtl_model.url }}"></a-asset-item>{% endif %}
+              {% if staging.entity.mtl_model %}<a-asset-item id="mtl-file-{{ staging.entity.id }}" src="{{ staging.entity.mtl_model.url }}"></a-asset-item>{% endif %}
             {% endif %}
           {% endfor %}
         </a-assets>
