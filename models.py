@@ -74,6 +74,13 @@ class Entity(models.Model):
     def __str__(self):
         return self.title
 
+    def check_material_file_name(self):
+        # this function should be called only if
+        # obj_model and mtl_model exist
+        mtl_name = self.mtl_model.name.split("/")[-1]
+        mtl_name = mtl_name.split(".")[0]
+        print(mtl_name)
+
 
 def material_image_directory_path(instance, filename):
     return "uploads/djaframe/obj/{0}/{1}".format(instance.entity.id, filename)
