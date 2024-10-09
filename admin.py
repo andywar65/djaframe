@@ -28,6 +28,11 @@ class EntityAdmin(admin.ModelAdmin):
                 )
             if ent.mtl_model and ent.material_images.exists():
                 ent.check_image_file_name()
+                self.message_user(
+                    request,
+                    f"Checked images for file: {ent.mtl_model.name}",
+                    messages.SUCCESS,
+                )
 
 
 @admin.register(Scene)

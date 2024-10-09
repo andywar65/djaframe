@@ -80,7 +80,7 @@ class Entity(models.Model):
 
         # get the material file name
         mtl_name = self.mtl_model.name.split("/")[-1]
-        # get files for object file and helper file
+        # get file paths for object file and helper file
         helper_path = Path(settings.MEDIA_ROOT).joinpath(
             "uploads/djaframe/scene/temp.obj"
         )
@@ -101,7 +101,43 @@ class Entity(models.Model):
         # this function should be called only if
         # images and mtl_model exist
 
-        return
+        # get image names as a dictionary
+        image_dict = {}
+        for img in self.material_images.all():
+            img_name = img.image.name.split("/")[-1]
+            image_dict[img_name.split(".")[0]] = img_name.split(".")[1]
+        # get file paths for material file and helper file
+        helper_path = Path(settings.MEDIA_ROOT).joinpath(
+            "uploads/djaframe/scene/temp.obj"
+        )
+        mtl_path = Path(self.mtl_model.path)
+        # copy helper from material file
+        with open(mtl_path, "r") as m_f, open(helper_path, "w") as h_f:
+            for line in m_f:
+                if "map_Ka " in line:
+                    start = line.split("map_Ka ")[0]
+                    rest = line.split("map_Ka ")[-1]
+                    name = rest.split(".")[0]
+                    for key, value in image_dict.items():
+                        if name == key:
+                            h_f.write(line)
+                        elif name in key:
+                            h_f.write(f"{start}map_Ka {key}.{value}\n")
+                elif "map_Kd " in line:
+                    start = line.split("map_Kd ")[0]
+                    rest = line.split("map_Kd ")[-1]
+                    name = rest.split(".")[0]
+                    for key, value in image_dict.items():
+                        if name == key:
+                            h_f.write(line)
+                        elif name in key:
+                            h_f.write(f"{start}map_Kd {key}.{value}\n")
+                else:
+                    h_f.write(line)
+        # copy material file back
+        with open(mtl_path, "w") as m_f, open(helper_path, "r") as h_f:
+            for line in h_f:
+                m_f.write(line)
 
 
 def material_image_directory_path(instance, filename):
