@@ -97,6 +97,12 @@ class Entity(models.Model):
             for line in h_f:
                 o_f.write(line)
 
+    def check_image_file_name(self):
+        # this function should be called only if
+        # images and mtl_model exist
+
+        return
+
 
 def material_image_directory_path(instance, filename):
     return "uploads/djaframe/obj/{0}/{1}".format(instance.entity.id, filename)
