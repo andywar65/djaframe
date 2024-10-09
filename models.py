@@ -77,9 +77,25 @@ class Entity(models.Model):
     def check_material_file_name(self):
         # this function should be called only if
         # obj_model and mtl_model exist
+
+        # get the material file name
         mtl_name = self.mtl_model.name.split("/")[-1]
-        mtl_name = mtl_name.split(".")[0]
-        print(mtl_name)
+        # get files for object file and helper file
+        helper_path = Path(settings.MEDIA_ROOT).joinpath(
+            "uploads/djaframe/scene/temp.obj"
+        )
+        obj_path = Path(self.obj_model.path)
+        # copy helper from object file
+        with open(obj_path, "r") as o_f, open(helper_path, "w") as h_f:
+            for line in o_f:
+                if line.startswith("mtllib"):
+                    h_f.write(f"mtllib {mtl_name}\n")
+                else:
+                    h_f.write(line)
+        # copy object file back
+        with open(obj_path, "w") as o_f, open(helper_path, "r") as h_f:
+            for line in h_f:
+                o_f.write(line)
 
 
 def material_image_directory_path(instance, filename):
